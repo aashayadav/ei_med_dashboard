@@ -190,7 +190,7 @@ Column {data-width=500}
 -----------------------------------------------------------------------
 
 ### Chart A: Survey participants across Oregon. 
-Participants represented all 36 counties in Oregon. Multiple includes participants working in more than one county in Oregon.
+Participants represented all 36 counties in Oregon. "Multiple" includes participants working in more than one county.
 
 ```{r}
 
