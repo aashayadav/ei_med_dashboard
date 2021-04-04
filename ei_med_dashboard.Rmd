@@ -25,6 +25,7 @@ color:white!important;
 </style>
 
 
+
 ```{r setup, include=FALSE}
 library(flexdashboard)
 library(tidyverse)
@@ -1827,54 +1828,40 @@ ggplot(data_reccomended,
 Findings
 ========================================
 
-Row
+Row {.tabset .tabset-fade}
 -------------------------------------
     
-### RQ1: To what extent are EI professionals aware of the categories of medical conditions that are listed in the Oregon State Plan policy guidance? (AWARENESS)
-Overall analysis showed that 74% are aware of the medical conditions listed in the Oregon State Plan Policy guidance, 72% are aware of the medical documents and reports that constitute written documentation of eligibility, 68% know that there are medical conditions that may not be presently adversely affecting child's development, and 56% are aware that there are medical conditions eligible for Part C services but may not be listed in the policy guidance. When results were analyzed by profession, significant differences were found in the awareness of healthcare and EI/ECSE professionals where 21% of healthcare professionals are aware and 19% are not aware of the medical conditions list. Among healthcare professionals, 18% are aware and 22% are not aware of the written documentation of Part C eligibility, 19% are aware and 22% are not aware that there are medical conditions that may not be presently affecting the child's development, and only 13% are aware and 27% are not aware that there are medical conditions that may be eligible for Part C services but are not listed in the policy documents. No significant differences were found based on job status (full-time vs part-time), years of service, and professional role, however, a lower number of professionals (27% vs 31%) with less than 15 years of experience reported to be aware of medical conditions that may be eligible for EI/ECSE services but not listed. Analysis based on professional role indicated that 24% of professionals whose role is to make referrals or provide medical diagnosis are aware of the medical conditions that may be eligible for services but not listed whereas 30% reported being unaware.
-Cronbach's alpha score of 0.73 indicates higher internal consistencies among 4 items with binary response in the survey that were asked to explore the awareness level. 
+### **Research Question1:**
 
+**To what extent are EI professionals aware of the categories of medical conditions that are listed in the Oregon State Plan policy guidance? (AWARENESS)**
 
+Overall analysis showed that **74%** are aware of the medical conditions listed in the Oregon State Plan Policy guidance, **72%** are aware of the medical documents and reports that constitute written documentation of eligibility, **68%** know that there are medical conditions that may not be presently adversely affecting child's development, and **56%** are aware that there are medical conditions eligible for Part C services but may not be listed in the policy guidance. When results were analyzed by profession, significant differences were found in the awareness of healthcare and EI/ECSE professionals where **21%** of healthcare professionals are aware and **19%** are not aware of the medical conditions list. Among healthcare professionals, **18%** are aware and **22%** are not aware of the written documentation of Part C eligibility, **19%** are aware and **22%** are not aware that there are medical conditions that may not be presently affecting the child's development, and only **13%** are aware and **27%** are not aware that there are medical conditions that may be eligible for Part C services but are not listed in the policy documents. No significant differences were found based on job status (full-time vs part-time), years of service, and professional role, however, a lower number of professionals **(27% vs 31%)** with less than 15 years of experience reported to be aware of medical conditions that may be eligible for EI/ECSE services but not listed. Analysis based on professional role indicated that **24%** of professionals whose role is to make referrals or provide medical diagnosis are aware of the medical conditions that may be eligible for services but not listed whereas **30%** reported being unaware.
+Cronbach's alpha score of **0.73** indicates higher internal consistencies among 4 items with binary response in the survey that were asked to explore the awareness level. 
 
-
-
-    
-```{r}
-
-
-```
  
-### RQ2: How are the categories of medical conditions that are listed in the Oregon State Plan policy guidance are understood and used by professionals in EI eligibility evaluations and assessments for birth to 5-year-old-children in Oregon? (IN PRACTICE)
-Results were analyzed based on the overall response, profession, job status, years of service, and professional role. Consistent results were found across all groups indicating limited use of medical conditions list due to lack of information. Overall analysis indicates that 77% of professionals ask for information on medical conditions from colleague to decide on EI referrals and eligibility evaluation, 58% have experienced a delay in EI eligibility evaluation due to lack of information, 57% have experienced a delay in timely receipt of EI services for children with diagnosed medical conditions, and 53% have looked for more information on medical conditions for EI eligibility determination.
-Sixty-eight percent reported that they have not skipped EI eligibility evaluation for children with diagnosed medical conditions that have a high probability of developmental delay.
+### **Research Question 2:**
+
+**How are the categories of medical conditions that are listed in the Oregon State Plan policy guidance are understood and used by professionals in EI eligibility evaluations and assessments for birth to 5-year-old-children in Oregon? (IN PRACTICE)**
 
 
-    
-```{r}
-
-
-``` 
-
-Row
--------------------------------------
-    
-
-### RQ3: How and to what extent are EI eligibility evaluation and assessments for children with diagnosed medical conditions impacted during the covid-19 restrictions? (During COVID-19)
-
-During the COVID-19 pandemic, 94% professionals reported to provide services remotely, 62% experienced delay in EI eligiblity determination for children with diagnosed medical conditions, and 48% have experienced decrease in number of children accessing healthcare and part C EI/ECSE services.
-A set of questions were asked only from EI/ECSE professionals to explore the state of uptake of EI/ECSE serivces during the pandemic where 77% reported to follow the 45-day timeline to do EI eligibility evaluation, assessments and IFSP development. Forty percent EI/ECSE professionals are using only tools that can be administered by parents during the COVID-19 pandemic and 30% reported to meet children and families in-person or in home visits. 
-Only 23% EI/ECSE professionals have reported to skip EI eligibility evaluation for children referred with written documentation of eligibility, and 9% reported to enroll children with interim IFSP where EI eligibility evaluation was not possible for children with diagnosed medical conditions during the COVID-19 pandemic. Low percentage of professionals reporting to skip EI eligibility evaluation and enrolling children with interim IFSP indicate lack of awareness or information among EI/ECSE professionals of federal regulations on children referred with diagnoed medical conditions that have a high probability of developmental delay or disability. 
-
-```{r}
-
-```
-
-### RQ4: What changes do EI professionals in Oregon recommend in the level of information provided about the categories of medical conditions that are likely to result in developmental delay? (VIEWS)    
-The analysis resulted in a consistent response from EI/ECSE and healthcare professionals in terms of changes they would prefer in medical conditions listed in the Oregon State Plan Policy guidance. Ninety percent reported having a more detailed and comprehensive list would help to decide when EI eligibility evaluations can be skipped and direct referrals are made for EI assessments and 86% percent agreed that a more detailed and comprehensive list of diagnosed medical conditions is needed in Oregon. Seventy-nice percent said a detailed and comprehensive list would have been helpful during the COVID-19 pandemic. Sixty-five percent said adequate information is not provided in the list of medical conditions that make children eligible for Part C EI/ECSE services in Oregon.
-
-    
-```{r}
+Results were analyzed based on the overall response, profession, job status, years of service, and professional role. Consistent results were found across all groups indicating limited use of medical conditions list due to lack of information. Overall analysis indicates that **77%** of professionals ask for information on medical conditions from colleague to decide on EI referrals and eligibility evaluation, **58%** have experienced a delay in EI eligibility evaluation due to lack of information, **57%** have experienced a delay in timely receipt of EI services for children with diagnosed medical conditions, and **53%** have looked for more information on medical conditions for EI eligibility determination.
+**Sixty-eight percent** reported that they have not skipped EI eligibility evaluation for children with diagnosed medical conditions that have a high probability of developmental delay.
 
 
 
-```
+### **Research Question 3:**
+
+**How and to what extent are EI eligibility evaluation and assessments for children with diagnosed medical conditions impacted during the covid-19 restrictions? (During COVID-19)**
+
+During the COVID-19 pandemic, **94%** professionals reported to provide services remotely, **62%** experienced delay in EI eligiblity determination for children with diagnosed medical conditions, and **48%** have experienced decrease in number of children accessing healthcare and part C EI/ECSE services.
+A set of questions were asked only from EI/ECSE professionals to explore the state of uptake of EI/ECSE serivces during the pandemic where **77%** reported to follow the 45-day timeline to do EI eligibility evaluation, assessments and IFSP development. **Forty percent** EI/ECSE professionals are using only tools that can be administered by parents during the COVID-19 pandemic and **30%** reported to meet children and families in-person or in home visits. 
+Only **23%** EI/ECSE professionals have reported to skip EI eligibility evaluation for children referred with written documentation of eligibility, and **9%** reported to enroll children with interim IFSP where EI eligibility evaluation was not possible for children with diagnosed medical conditions during the COVID-19 pandemic. Low percentage of professionals reporting to skip EI eligibility evaluation and enrolling children with interim IFSP indicate lack of awareness or information among EI/ECSE professionals of federal regulations on children referred with diagnoed medical conditions that have a high probability of developmental delay or disability. 
+
+
+### **Research Question 4:**
+
+**What changes do EI professionals in Oregon recommend in the level of information provided about the categories of medical conditions that are likely to result in developmental delay? (VIEWS)**
+
+The analysis resulted in a consistent response from EI/ECSE and healthcare professionals in terms of changes they would prefer in medical conditions listed in the Oregon State Plan Policy guidance. **Ninety percent** reported having a more detailed and comprehensive list would help to decide when EI eligibility evaluations can be skipped and direct referrals are made for EI assessments and **86%** percent agreed that a more detailed and comprehensive list of diagnosed medical conditions is needed in Oregon. **Seventy-nine percent** said a detailed and comprehensive list would have been helpful during the COVID-19 pandemic. **Sixty-five percent** said adequate information is not provided in the list of medical conditions that make children eligible for Part C EI/ECSE services in Oregon.
+
+
