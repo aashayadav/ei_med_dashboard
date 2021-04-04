@@ -1,0 +1,1880 @@
+---
+title: "Part C Eligibility for Children with Diagnosed Medical Conditions"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: sandstone
+    orientation: columns
+    vertical_layout: fill
+   
+---
+<style>                     
+.navbar {
+  background-color:#003D79;
+  border-color:white;
+}
+.navbar-brand {
+color:white!important;
+}
+</style>   
+
+<style type="text/css">
+
+.chart-title {  /* chart_title  */
+   font-size: 15px
+
+</style>
+
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(rio)
+library(here)
+library(ggthemes)
+library(ggpubr)
+library(psych)
+library(colorblindr)
+library(scales)
+#install.packages("showtext")
+library(showtext)
+library(xaringanthemer)
+library(gt)
+library(kableExtra)
+#install.packages("dygraphs")
+library(dygraphs)
+library(plotly)
+
+
+
+```
+
+```{r, data}
+
+data <- import(here::here("data", "ei_eligibility.xlsx"))
+
+
+```
+
+
+
+```{r xaringan-themer, include=FALSE, warning = FALSE}
+
+library(xaringanthemer)
+style_mono_accent(
+  base_color = "#DC322F",               # bright red
+  inverse_background_color = "#002B36", # dark dark blue
+  inverse_header_color = "#31b09e",     # light aqua green
+  inverse_text_color = "#FFFFFF",       # white
+  title_slide_background_color = "var(--base)",
+  text_font_google = google_font("Kelly Slab", "100", "100i"),
+  header_font_google = google_font("Hind", "100", "100i")
+)
+
+```
+
+
+Descriptive
+============================================
+
+
+Column
+-----------------------------------------------------------------------
+### About the study
+Part C Early Intervention/Early Childhood Special Education (EI/ECSE) services are federally-funded, statewide system that provides coordinated services to parents of birth to 5-year-old children who have or are at-risk of developmental delay or disability. Eligibility for Part C services is determined by state's definition of developmental delay and medical conditions that have a high probability of disability. There is no consistency in how different states define diagnosed medical conditions that give children access to Part C EI/ECSE services. A study conducted by Barger et al. posits that the wide heterogeniety in number and type of medical conditions may lead to imbalance in children gaining access to IDEA Part C services.
+Therefore, the purpose of this study was to explore the understanding and use of categories of diagnosed medical conditions in Part C eligibility determination, from the perspective of EI/ECSE and healthcare professionals in the state of Oregon.  
+**METHOD:** The embedded mixed-method design was adopted where the qualitative (interview) form of data collection was nested within the quanitative form (survey). Data collection from the survey and semi-structured interviews occured simultaneously where the interview data was used to verify the findings derived from the survey data.  
+**PARTICIPANTS:** Part C EI/ECSE professionals and pediatricians and family physicans were approached across Oregon. Online survey was filled by **90 professionals** and **18 professionals** attented the semi-structure interview. 
+Permission to conduct the study was granted by the Institution Review Board at the University of Oregon.<br />
+**Protocol:09032020.003**
+
+
+### Descriptive analysis
+
+```{r}
+
+# recoding the position to two categories: EI Professional and Healthcare Profession
+
+data <- data %>%
+  mutate(position = recode(position,
+                           "Assistant teacher" = "EI/ECSE Professional",
+                           "EI coordinator" = "EI/ECSE Professional",
+                           "EI/ECSE Coordinator" = "EI/ECSE Professional",
+                           "EI/ECSE director" = "EI/ECSE Professional",
+                           "EI/ECSE specialist" = "EI/ECSE Professional",
+                           "EI/ECSE specialist autism" = "EI/ECSE Professional",
+                           "EI/ECSE specialist, & ECSE ABA Teacher" = "EI/ECSE Professional",
+                           "EI/ECSE specialist, EI coordinator" = "EI/ECSE Professional",
+                           "EI/ECSE specialist, EI/ECSE specialist autism" = "EI/ECSE Professional",
+                           "Eval Team Manager" = "EI/ECSE Professional",
+                           "Intake Specialist who works w/med statement referrals" = "EI/ECSE Professional",
+                           "Nurse practitioner" = "Healthcare Professional",
+                           "Physical therapist, Evaluator-- evaluation team" = "EI/ECSE Professional",
+                           "Physician" = "Healthcare Professional",
+                           "Physician assistant" = "Healthcare Professional",
+                           "Program coordinator" = "EI/ECSE Professional",
+                           "Senior advisor" = "EI/ECSE Professional",
+                           "State EI/ECSE staff" = "EI/ECSE Professional",
+                           "EI professional" = "EI/ECSE Professional",
+                           "Healthcare professional" = "Healthcare Professional",
+                           "Physical therapist" = "EI/ECSE Professional",
+                           "Occupational therapist" = "EI/ECSE Professional",
+                           "Speech & Language pathologist" = "EI/ECSE Professional"))
+
+
+# recoding the role to two categories:
+
+data <- data %>%
+  mutate(role = recode(role,
+                       "Providing medical or developmental diagnosis." = "Making Referrals to EI and\n Providing Med. Diagnosis",
+                       "Both, making referral for EI eligibility evaluation and providing medical diagnosis." = 
+                         "Making Referrals to EI and\n Providing Med. Diagnosis",
+                       "Making a referral for EI eligibility evaluation." = 
+                         "Making Referrals to EI and\n Providing Med. Diagnosis",
+                       "Carrying out EI eligibility evaluation." = "Part C EI/ECSE \nEligibility Evaluations"))
+
+data <- data %>%
+  mutate(years_service = recode(years_service,
+                                "0-5" = "Less than 15 years",
+                                "5-10" = "Less than 15 years",
+                                "10-15" = "Less than 15 years",
+                                "15 and above" = "Above 15 years"))
+
+#data[sapply(data, is.character)] <- lapply(data[sapply(data,is.character)],as.factor)
+
+table_pos <- data %>%
+  select(position) %>%
+  group_by(position) %>%
+  count() %>%
+  mutate(percent = round((n/90)*100, digits = 0))
+
+table_job_status <- data %>%
+  select(job_status) %>%
+  group_by(job_status) %>%
+  count() %>%
+  mutate(percent = round((n/90)*100, digits = 0))
+
+table_years_service <- data %>%
+  select(years_service) %>%
+  group_by(years_service) %>%
+  count() %>%
+  mutate(percent = round((n/90)*100, digits = 0))
+
+table_role <- data%>%
+  select(role) %>%
+  group_by(role) %>%
+  count() %>%
+  mutate(percent = round((n/90)*100, digits = 0))
+
+
+table_data <- bind_rows(table_pos, table_job_status, table_role, table_years_service) %>%
+  rename("N" = "n",
+         "Percent" = "percent")
+
+table_data %>%
+  unite(Participants, position, job_status, role, years_service, na.rm = TRUE) %>%
+  kableExtra::kable() %>%
+  kable_styling(full_width = F) %>%
+  pack_rows("Profession", 1, 2, label_row_css = "background-color: #F0FFFF; color: #808080;") %>%
+  pack_rows("Job Status", 3, 4, label_row_css = "background-color: #F0FFFF; color: #808080;") %>%
+  pack_rows("Role", 5, 6, label_row_css = "background-color: #F0FFFF; color: #808080;") %>%
+  pack_rows("Years of Service", 7, 8, label_row_css = "background-color:#F0FFFF; color: #808080;") %>%
+  column_spec(1:3, color = "black")
+  
+  
+  
+
+```
+
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Chart A: Survey participants across Oregon. 
+Participants represented all 36 counties in Oregon. Multiple includes participants working in more than one county in Oregon.
+
+```{r}
+
+county_data <- data %>%
+  select(county) %>%
+  mutate(county = recode(county,
+                         "All" = "Multiple",
+                         "Benton County, Lincoln County, Linn County" = "Multiple",
+                         "Clackamas County, Clatsop County, Marion County, Multnomah County, Tilamook County, 
+                         Washington County, Yamhill County" = "Multiple",
+                         "Clackamas County, Multnomah County, Washington County" = "Multiple",
+                         "Clackamas County, Multnomah County, Washington County, All" = "Multiple",
+                         "Clatsop County, Columbia County, Tillamook County, Washington County" = "Multiple",
+                         "Columbia County, Washington County" = "Multiple",
+                         "Coos County, Curry County, Douglas County" = "Multiple",
+                         "Crook County, Deschutes County, Jefferson County" = "Multiple",
+                         "Deschutes County, Jefferson County" = "Multiple",
+                         "Deschutes County, Klamath County" = "Multiple",
+                         "Klamath County, Lake County" = "Multiple",
+                         "Lane County, Linn County" = "Multiple",
+                         "Marion County, Polk County" = "Multiple",
+                         "Marion County, Polk County, Yamhill County" = "Multiple",
+                         "Multnomah County, Washington County" = "Multiple",
+                         "Clackamas County, Clatsop County, Marion County, Multnomah County, Tillamook County, Washington County, Yamhill County" = "Multiple")) %>%
+  group_by(county) %>%
+  count() %>%
+  mutate(perc = round((n/90)*100, digits = 0))
+
+
+county_data %>%
+  ggplot(aes(x = perc, y = reorder(county, perc), fill = county)) +
+  geom_vline(xintercept = c(10, 20, 30, 40), color = "grey75") +
+  geom_col(fill = "gray75", alpha = 0.8) +
+  geom_col(data = filter(county_data,
+                         county == "Multiple"|
+                         county == "Lane County"),
+           fill = "#C55644") +
+  #scale_x_continuous(labels = scales::percent) + 
+  scale_x_continuous(breaks = pretty(county_data$perc), 
+                    labels = paste0((pretty(county_data$perc)), "%"),
+                    expand = c(0, 0)) +
+  geom_text(aes(label = paste0(county_data$perc, "%")), color = "black", size = 5, hjust = -0.5) +
+  theme_xaringan() +
+  labs(x = "Percentage of respondents across Oregon",
+       y = NULL,
+       title = "Survey Participants Across Oregon") +
+  theme(legend.position = "none",
+        plot.title.position = "plot",
+        plot.title = element_text(size = 20),
+        axis.title.x = element_text(size = 20),
+        axis.text.y = element_text(size = 15),
+        axis.text.x = element_text(size = 15))
+ 
+    
+  
+
+```
+
+
+
+
+Awareness
+=============================================
+
+Column{data-height=50%, data-width=15%}
+-----------------------------------------------------------------------
+
+### Cronbach's alpha to measure how closely related set of questions are to indicate participants' awareness.
+
+```{r}
+
+valueBox(0.73,
+         icon = "fas fa-thumbs-up")
+
+```
+
+
+### Survey participants fully completed this section.
+
+```{r}
+
+valueBox(90,
+         icon = "ion-person-stalker")
+
+```
+
+Column{}
+------------------------------------------------------------------
+
+### Questions in the survey (Awareness)
+
+```{r}
+
+data%>%
+  select(6:9) %>%
+  pivot_longer(cols = starts_with("aware_"),
+               names_to = "Questions",
+               values_to = "Response") %>%
+  group_by(Questions) %>%
+  count() %>% 
+  mutate("Questions" = recode(Questions, 
+                              "aware_1_both" = "Q1: Are you aware of the medical conditions for children that have a high probability of significant developmental delay listed on Oregon State Plan Policy guidance?",
+                              "aware_2_both" = "Q2: Are you aware that there are medical conditions for children that may qualify for EI eligibility evaluation and services that are not listed on Oregon State Plan Policy guidance?",
+                              "aware_3_both" = "Q3: Are you aware that there are medical conditions for which minimum criteria need to be met to be eligible for EI services and a child’s disability does not need to be presently adversely affecting the child’s development?",
+                              "aware_4_both" = "Q4: Are you aware of the medical documents and reports that contribute to the written documentation of eligibility for EI services based on the medical condition?"
+                              )) %>%
+  rename("N" = "n") %>%
+  kableExtra::kable() %>%
+  kable_styling(full_width = TRUE) %>%
+  column_spec(1, width = "20cm", background = "#F0FFFF" )
+
+```
+### Analysis: Fisher's exact test
+
+```{r}
+aware_fisher <- data.frame(
+  Ques = c("Q1:Aware of Med. Condition", 
+           "Q2:Elig Med. Cond. Not Listed", 
+           "Q3:Med. Cond. Presently Not Affecting",
+           "Q4:Written Documentation of Eligiblity"),
+  "EI/ECSE Professional Vs Healthcare Professional" = c("0.0001***", "0.001***", "0.001***", "2.295"),
+  "Full-time Vs Part-time" = c("0.01***", "0.588", "0.399", "0.548"),
+  "Above 15 years of service Vs Less than 15 years" = c("0.226", "0.053", "0.651", "0.101"),
+  "Part C EI/ECSE eligibility evaluations Vs Making referrals and providing diagnosis" = c("5.665", "0.055", "5.665", "6.305")
+) 
+
+aware_fisher %>%
+  kableExtra::kable(col.names = c("Ques", "EI/ECSE Professional\n Vs\nHealthcare Professional",
+                                  "Full-time\nVs\nPart-time",
+                                  "Above 15 years of service\n Vs \n Less than 15 years",
+                                  "Part C EI/ECSE eligibility evaluations \n Vs \n Making referrals and providing diagnosis")) %>%
+  kable_styling(full_width = FALSE) %>%
+  footnote("***Fisher's exact test p<0.05 at 95% confidence interval")
+
+
+
+```
+
+
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+
+### All participants
+
+
+
+
+```{r}
+
+aware_1 <- data %>%
+  select(aware_1_both) %>%
+  group_by(aware_1_both) %>%
+  count() %>%
+  rename("Aware of Med. Condition" = n)
+ 
+
+aware_2 <- data%>%
+  select(aware_2_both) %>%
+  group_by(aware_2_both) %>%
+  count() %>%
+  rename("Elig Med. Cond. Not Listed" = n)
+ 
+
+aware_3 <- data%>%
+  select(aware_3_both) %>%
+  group_by(aware_3_both) %>%
+  count() %>%
+  rename("Med. Cond. Presently Not Affecting" = n)
+ 
+
+aware_4 <- data %>%
+  select(aware_4_both) %>%
+  group_by(aware_4_both) %>%
+  count() %>%
+  rename("Written Documentation of Eligibility" = n)
+  
+ 
+
+aware_plot <- bind_cols(aware_1, aware_2, aware_3, aware_4) %>%
+  select(aware_1_both, "Aware of Med. Condition","Elig Med. Cond. Not Listed","Med. Cond. Presently Not Affecting",
+         "Written Documentation of Eligibility") %>% 
+  pivot_longer(cols = c("Aware of Med. Condition","Elig Med. Cond. Not Listed",
+                        "Med. Cond. Presently Not Affecting", "Written Documentation of Eligibility"),
+               names_to = "aware",
+               values_to = "count") %>%
+  mutate(percent = round((count/90)*100, digits = 0))
+
+
+aware_plot <- aware_plot %>%
+  rename("response" = "aware_1_both") %>%
+  mutate(response = recode(response,
+                           "No" = "Not aware",
+                           "Yes" = "Aware"))
+
+# For the divergign plot
+aware_plot <- aware_plot %>%
+mutate(percent = ifelse(response == "Aware",
+                         percent, 
+                       -1*percent))
+
+
+
+#Plot AWareness: By Profession
+
+ggplot(aware_plot,
+       aes(x = percent, y = fct_reorder(aware, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(aware_plot$percent), 
+                     labels = paste0(abs(pretty(aware_plot$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = aware, label = paste0(abs(aware_plot$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan() +
+  ggtitle("Awareness of Listed Medical Conditions Eligible for Part C EI/ECSE Services: All participants") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18)) +
+  guides(fill = guide_legend(reverse = TRUE))
+
+  
+
+```
+
+
+
+### By profession
+
+
+
+```{r}
+
+by_pos <- data %>%
+  select(position, aware_1_both, aware_2_both, aware_3_both, aware_4_both)
+
+pos_aware1 <- by_pos %>%
+  select(position, aware_1_both) %>%
+  group_by(position, aware_1_both) %>%
+  count(aware_1_both) %>%
+  rename("response" = "aware_1_both",
+         "Aware of Med.\n Condition" = "n")
+
+
+pos_aware2 <- by_pos %>%
+  select(position, aware_2_both) %>%
+  group_by(position, aware_2_both) %>%
+  count(aware_2_both) %>%
+  rename("response" = "aware_2_both",
+         "Elig Med. Cond.\n Not Listed" = "n")
+  
+
+pos_aware3 <- by_pos %>%
+  select(position, aware_3_both) %>%
+  group_by(position, aware_3_both) %>%
+  count(aware_3_both) %>%
+  rename("response" = "aware_3_both",
+         "Med. Cond. Presently\n Not Affecting" = "n")
+ 
+
+
+pos_aware4 <- by_pos %>%
+  select(position, aware_4_both) %>%
+  group_by(position, aware_4_both) %>%
+  count(aware_4_both) %>%
+  rename("response" = "aware_4_both",
+         "Written Documentation\n of Eligibility" = "n")
+
+
+
+data_pos <- left_join(pos_aware1, pos_aware2, by = c("position", "response"))
+data_pos <- left_join(data_pos, pos_aware3, by = c("position", "response"))
+data_pos <- left_join(data_pos, pos_aware4, by = c("position", "response"))
+
+data_pos <- data_pos %>%
+  pivot_longer(cols = -c(position, response),
+               names_to = "aware",
+               values_to = "count") %>%
+  mutate(percent = round((count/90)*100, digits = 0))
+
+# for the diverging plot
+
+data_pos <- data_pos %>%
+  mutate(response = recode(response,
+                           "Yes" = "Aware",
+                           "No" = "Not aware")) %>%
+  mutate(percent = ifelse(response == "Aware",
+                          percent, 
+                          -1*percent))
+
+
+
+ggplot(data_pos,
+       aes(x = percent, y = fct_reorder(aware, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  facet_wrap(~position) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(data_pos$percent),
+                     labels = paste0(abs(pretty(data_pos$percent)), "%")) +
+  geom_text(aes(x = percent/2, 
+                y = aware, 
+                label = paste0(abs(data_pos$percent), "%")), 
+            color = "red", 
+            size = 5) +
+  theme_xaringan() +
+  ggtitle("Awareness of Listed Medical Conditions for Part C EI/ECSE Service by Profession") +
+  theme(axis.title = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_blank(),
+        legend.position = "bottom",
+        legend.direction = "horizontal",
+        plot.title.position = "plot",
+        axis.text=element_text(size=18),
+        plot.title = element_text(color="red", 
+                                  size=20, 
+                                  hjust = 0.5),
+        legend.text = element_text(size = 18),
+        strip.background = element_blank(),
+        strip.text = element_text(face="bold", 
+                                  size = 18, 
+                                  color = "#d55e00", 
+                                  hjust = 0.5)) +
+guides(fill = guide_legend(reverse = TRUE)) 
+
+
+```
+
+### By Job status
+
+```{r}
+
+status <- data%>%
+  select(job_status, aware_1_both, aware_2_both, aware_3_both, aware_4_both)
+
+status_aware1 <- status %>%
+  select(job_status, aware_1_both) %>%
+  group_by(job_status, aware_1_both) %>%
+  count(aware_1_both) %>%
+  rename("response" = "aware_1_both",
+         "Aware of Med.\n Condition" = "n")
+
+
+status_aware2 <- status %>%
+  select(job_status, aware_2_both) %>%
+  group_by(job_status, aware_2_both) %>%
+  count(aware_2_both) %>%
+  rename("response" = "aware_2_both",
+         "Elig Med. Cond.\n Not Listed" = "n")
+  
+
+status_aware3 <- status %>%
+  select(job_status, aware_3_both) %>%
+  group_by(job_status, aware_3_both) %>%
+  count(aware_3_both) %>%
+  rename("response" = "aware_3_both",
+         "Med. Cond. Presently\n Not Affecting" = "n")
+ 
+
+
+status_aware4 <- status %>%
+  select(job_status, aware_4_both) %>%
+  group_by(job_status, aware_4_both) %>%
+  count(aware_4_both) %>%
+  rename("response" = "aware_4_both",
+         "Written Documentation\n of Eligibility" = "n")
+
+
+
+status_data <- left_join(status_aware1, status_aware2, by = c("job_status", "response"))
+status_data <- left_join(status_data, status_aware3, by = c("job_status", "response"))
+status_data <- left_join(status_data, status_aware4, by = c("job_status", "response"))
+
+status_data <- status_data %>%
+  pivot_longer(cols = -c(job_status, response),
+               names_to = "aware",
+               values_to = "count") %>%
+  mutate(percent = round((count/90)*100, digits = 0))
+
+
+# for the diverging plot
+
+status_data <- status_data %>%
+  mutate(response = recode(response,
+                           "Yes" = "Aware",
+                           "No" = "Not aware")) %>%
+  mutate(percent = ifelse(response == "Aware",
+                          percent, 
+                         -1*percent))
+
+ggplot(status_data,
+       aes(x = percent, y = fct_reorder(aware, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  facet_wrap(~job_status) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(status_data$percent),
+                     labels = paste0(abs(pretty(status_data$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = aware, label = paste0(abs(status_data$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan() +
+  ggtitle("Awareness of Listed Medical Conditions for Part C EI/ECSE Services by Job Status") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18),
+         strip.background = element_blank(),
+         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) + 
+  guides(fill = guide_legend(reverse = TRUE))
+
+
+
+
+```
+
+### Years of service
+
+```{r}
+
+service_aware1 <- data %>%
+  select(years_service, aware_1_both) %>%
+  group_by(years_service, aware_1_both) %>%
+  count(aware_1_both) %>%
+  rename("response" = "aware_1_both",
+         "Aware of Med.\n Condition" = "n")
+
+
+service_aware2 <- data %>%
+  select(years_service, aware_2_both) %>%
+  group_by(years_service, aware_2_both) %>%
+  count(aware_2_both) %>%
+  rename("response" = "aware_2_both",
+         "Elig Med. Cond.\n Not Listed" = "n")
+  
+
+service_aware3 <- data %>%
+  select(years_service, aware_3_both) %>%
+  group_by(years_service, aware_3_both) %>%
+  count(aware_3_both) %>%
+  rename("response" = "aware_3_both",
+         "Med. Cond. Presently\n Not Affecting" = "n")
+ 
+service_aware4 <- data %>%
+  select(years_service, aware_4_both) %>%
+  group_by(years_service, aware_4_both) %>%
+  count(aware_4_both) %>%
+  rename("response" = "aware_4_both",
+         "Written Documentation\n of Eligibility" = "n")
+
+service_data <- left_join(service_aware1, service_aware2, by = c("years_service", "response"))
+service_data <- left_join(service_data, service_aware3, by = c("years_service", "response"))
+service_data <- left_join(service_data, service_aware4, by = c("years_service", "response"))
+
+
+service_data <- service_data %>%
+  pivot_longer(cols = -c(years_service, response),
+               names_to = "aware",
+               values_to = "count") %>%
+  mutate(percent = round((count/90)*100, digits = 0))
+
+# for the diverging plot
+
+service_data <- service_data %>%
+  mutate(response = recode(response,
+                           "Yes" = "Aware",
+                           "No" = "Not aware")) %>%
+  mutate(percent = ifelse(response == "Aware",
+                          percent, 
+                         -1*percent))
+
+ggplot(service_data,
+       aes(x = percent, y = fct_reorder(aware, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  facet_wrap(~years_service) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(service_data$percent),
+                     labels = paste0(abs(pretty(service_data$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = aware, label = paste0(abs(service_data$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan() +
+  ggtitle("Awareness of Listed Medical Conditions for Part C EI/ECSE Services by Job Status") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18),
+         strip.background = element_blank(),
+         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) +
+  guides(fill = guide_legend(reverse = TRUE)) 
+  
+
+```
+
+### By professional role
+
+```{r}
+
+role_data <- data%>%
+  select(role, aware_1_both, aware_2_both, aware_3_both, aware_4_both)
+
+role_data <- role_data %>%
+  mutate(role = recode(role,
+                       "Providing medical or developmental diagnosis." = "Making Referrals to EI and\n Providing Med. Diagnosis",
+                       "Both, making referral for EI eligibility evaluation and providing medical diagnosis." = 
+                         "Making Referrals to EI and\n Providing Med. Diagnosis",
+                       "Making a referral for EI eligibility evaluation." = 
+                         "Making Referrals to EI and\n Providing Med. Diagnosis",
+                       "Carrying out EI eligibility evaluation." = "Part C EI/ECSE \nEligibility Evaluations"))
+
+role_aware1 <- role_data %>%
+  select(role, aware_1_both) %>%
+  group_by(role, aware_1_both) %>%
+  count(aware_1_both) %>%
+  rename("response" = "aware_1_both",
+         "Aware of Med.\nCondition" = "n")
+
+role_aware2 <- role_data %>%
+  select(role, aware_2_both) %>%
+  group_by(role, aware_2_both) %>%
+  count(aware_2_both) %>%
+  rename("response" = "aware_2_both",
+         "Elig Med. Cond.\n Not Listed" = "n")
+  
+
+role_aware3 <- role_data %>%
+  select(role, aware_3_both) %>%
+  group_by(role, aware_3_both) %>%
+  count(aware_3_both) %>%
+  rename("response" = "aware_3_both",
+         "Med. Cond. Presently\n Not Affecting" = "n")
+ 
+
+
+role_aware4 <- role_data %>%
+  select(role, aware_4_both) %>%
+  group_by(role, aware_4_both) %>%
+  count(aware_4_both) %>%
+  rename("response" = "aware_4_both",
+         "Written Documentation\n of Eligibility" = "n")
+
+
+role_data <- left_join(role_aware1, role_aware2, by = c("role", "response"))
+role_data <- left_join(role_data, role_aware3, by = c("role", "response"))
+role_data <- left_join(role_data, role_aware4, by = c("role", "response"))
+
+role_data <- role_data %>%
+  pivot_longer(cols = -c(role, response),
+               names_to = "aware",
+               values_to = "count") %>%
+  mutate(percent = round((count/90)*100, digits = 0))
+
+# for the diverging plot
+
+role_data <- role_data %>%
+  mutate(response = recode(response,
+                           "Yes" = "Aware",
+                           "No" = "Not aware")) %>%
+  mutate(percent = ifelse(response == "Aware",
+                          percent, 
+                         -1*percent))
+
+ggplot(role_data,
+       aes(x = percent, y = fct_reorder(aware, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  facet_wrap(~role) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(role_data$percent),
+                     labels = paste0(abs(pretty(role_data$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = aware, label = paste0(abs(role_data$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan() +
+  ggtitle("Awareness of Listed Medical Conditions for Part C EI/ECSE Services by Professional Role") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18),
+         strip.background = element_blank(),
+         strip.text = element_text(size = 18, color = "#d55e00", hjust = 0.5)) + 
+  guides(fill = guide_legend(reverse = TRUE))
+
+
+```
+
+
+
+
+In-practice
+============================================
+
+
+Column{data-height=50%, data-width=15%}
+-----------------------------------------------------------------------
+
+
+### Survey participants fully completed this section.
+
+```{r}
+
+valueBox(90,
+         icon = "ion-person-stalker")
+
+```
+
+Column{}
+------------------------------------------------------------------
+
+### Questions in the survey (In-Practice)
+
+```{r}
+
+data%>%
+  select(10:14) %>%
+  pivot_longer(cols = ends_with("_both"),
+               names_to = "Questions",
+               values_to = "Response") %>%
+  group_by(Questions) %>%
+  count() %>% 
+  mutate("Questions" = recode(Questions, 
+                              "skipped_elig_both" = "Q: Have you ever referred a child directly for IFSP development based on a diagnosed medical condition, without doing the preliminary step of eligibility evaluation?",
+                              "delay_elig_both" = "Q: Have you ever experienced a delay in the EI eligibility determination process due to a lack of information or clarity on a child’s medical condition?",
+                              "difficulty_access_both" = "Q: Have you come across children with a diagnosed medical condition who could not access EI eligibility evaluation and other services on time?",
+                              "help_colleague_both" = "Have you ever asked another professional for information on medical conditions to help evaluate a child’s EI eligibility?",
+                              "searched_medcond_both" = "Q: Have you ever searched for information on medical conditions to make EI eligibility determination?")) %>%
+  rename("N" = "n") %>%
+  kableExtra::kable() %>%
+  kable_styling(full_width = TRUE) %>%
+  column_spec(1, width = "20cm", background = "#F0FFFF" )
+
+```
+
+
+
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### By all participants
+
+```{r}
+
+
+
+
+prac_1_all <- data %>%
+  select(skipped_elig_both) %>%
+  group_by(skipped_elig_both) %>%
+  count() %>%
+  rename("Skippled EI Eligiblity Eval" = n,
+         "response" = "skipped_elig_both" )
+ 
+
+prac_2_all <- data%>%
+  select(delay_elig_both) %>%
+  group_by(delay_elig_both) %>%
+  count() %>%
+  rename("Delay in EI Eligibility Eval" = n,
+         "response" = "delay_elig_both")
+ 
+
+prac_3_all <- data%>%
+  select(difficulty_access_both) %>%
+  group_by(difficulty_access_both) %>%
+  count() %>%
+  rename("Difficulty access services" = n,
+         "response" = "difficulty_access_both")
+ 
+
+prac_4_all <- data %>%
+  select(help_colleague_both) %>%
+  group_by(help_colleague_both) %>%
+  count() %>%
+  rename("Ask for help from colleague" = n,
+         "response" = "help_colleague_both")
+  
+ 
+prac_5_all <- data %>%
+  select(searched_medcond_both) %>%
+  group_by(searched_medcond_both) %>%
+  count() %>%
+  rename("Searched for eligible medical conditions" = n,
+         "response" = "searched_medcond_both")
+
+
+practice_data <- left_join(prac_1_all, prac_2_all, by = "response")
+practice_data <- left_join(practice_data, prac_3_all, by =  "response")
+practice_data <- left_join(practice_data, prac_4_all, by = "response")
+practice_data <- left_join(practice_data, prac_5_all, by="response")
+
+practice_data <- practice_data %>%
+  pivot_longer(cols = -c("response"),
+               names_to = "practice",
+               values_to = "count") %>%
+  mutate(percent = round((count/90)*100, digits = 0))
+
+# for the diverging plot
+
+practice_data <- practice_data %>%
+  mutate(percent = ifelse(response == "Yes",
+                          percent, 
+                         -1*percent))
+
+
+#Plot AWareness: By Profession
+
+ggplot(practice_data,
+       aes(x = percent, y = fct_reorder(practice, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(practice_data$percent), 
+                     labels = paste0(abs(pretty(practice_data$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = practice, label = paste0(abs(practice_data$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan() +
+  ggtitle("Use of Listed Medical Conditions in Practice") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18)) +
+  guides(fill = guide_legend(reverse = FALSE))
+
+  
+```
+
+### By profession
+
+```{r, fig.width = 8}
+
+
+prac_1_pro <- data %>%
+  select(position, skipped_elig_both) %>%
+  group_by(position, skipped_elig_both) %>%
+  count() %>%
+  rename("Skippled EI Eligiblity Eval" = n,
+         "response" = "skipped_elig_both" )
+ 
+
+prac_2_pro <- data%>%
+  select(position, delay_elig_both) %>%
+  group_by(position, delay_elig_both) %>%
+  count() %>%
+  rename("Delay in EI Eligibility Eval" = n,
+         "response" = "delay_elig_both")
+ 
+
+prac_3_pro <- data%>%
+  select(position, difficulty_access_both) %>%
+  group_by(position, difficulty_access_both) %>%
+  count() %>%
+  rename("Difficulty access services" = n,
+         "response" = "difficulty_access_both")
+ 
+
+prac_4_pro <- data %>%
+  select(position, help_colleague_both) %>%
+  group_by(position, help_colleague_both) %>%
+  count() %>%
+  rename("Ask for help from colleague" = n,
+         "response" = "help_colleague_both")
+  
+ 
+prac_5_pro <- data %>%
+  select(position, searched_medcond_both) %>%
+  group_by(position, searched_medcond_both) %>%
+  count() %>%
+  rename("Searched for eligible\n medical conditions" = n,
+         "response" = "searched_medcond_both")
+
+
+practice_data_pro <- left_join(prac_1_pro, prac_2_pro, by = c("position", "response"))
+practice_data_pro <- left_join(practice_data_pro, prac_3_pro, by =  c("position", "response"))
+practice_data_pro <- left_join(practice_data_pro, prac_4_pro, by = c("position", "response"))
+practice_data_pro <- left_join(practice_data_pro, prac_5_pro, by = c("position", "response"))
+
+
+practice_data_pro <- practice_data_pro %>%
+  pivot_longer(cols = -c("position", "response"),
+               names_to = "practice",
+               values_to = "count") %>%
+  mutate(percent = round((count/90)*100, digits = 0))
+
+# for the diverging plot
+
+practice_data_pro <- practice_data_pro %>%
+  mutate(percent = ifelse(response == "Yes",
+                          percent, 
+                         -1*percent))
+
+
+#Plot AWareness: By Profession
+
+ggplot(practice_data_pro,
+       aes(x = percent, y = fct_reorder(practice, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  facet_wrap(~position) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(practice_data_pro$percent), 
+                     labels = paste0(abs(pretty(practice_data_pro$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = practice, label = paste0(abs(practice_data_pro$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan() +
+  ggtitle("Use of Listed Medical Conditions By Profession") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18),
+         strip.background = element_blank(),
+         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) +
+  guides(fill = guide_legend(reverse = FALSE))
+
+
+
+```
+
+### By job status
+
+```{r, fig.width=8}
+
+prac_1_job <- data %>%
+  select(job_status, skipped_elig_both) %>%
+  group_by(job_status, skipped_elig_both) %>%
+  count() %>%
+  rename("Skippled EI Eligiblity Eval" = n,
+         "response" = "skipped_elig_both" )
+ 
+
+prac_2_job <- data%>%
+  select(job_status, delay_elig_both) %>%
+  group_by(job_status, delay_elig_both) %>%
+  count() %>%
+  rename("Delay in EI Eligibility Eval" = n,
+         "response" = "delay_elig_both")
+ 
+
+prac_3_job <- data%>%
+  select(job_status, difficulty_access_both) %>%
+  group_by(job_status, difficulty_access_both) %>%
+  count() %>%
+  rename("Difficulty access services" = n,
+         "response" = "difficulty_access_both")
+ 
+
+prac_4_job <- data %>%
+  select(job_status, help_colleague_both) %>%
+  group_by(job_status, help_colleague_both) %>%
+  count() %>%
+  rename("Ask for help from colleague" = n,
+         "response" = "help_colleague_both")
+  
+ 
+prac_5_job <- data %>%
+  select(job_status, searched_medcond_both) %>%
+  group_by(job_status, searched_medcond_both) %>%
+  count() %>%
+  rename("Searched for eligible\n medical conditions" = n,
+         "response" = "searched_medcond_both")
+
+
+practice_data_job <- left_join(prac_1_job, prac_2_job, by = c("job_status", "response"))
+practice_data_job <- left_join(practice_data_job, prac_3_job, by =  c("job_status", "response"))
+practice_data_job <- left_join(practice_data_job, prac_4_job, by = c("job_status", "response"))
+practice_data_job <- left_join(practice_data_job, prac_5_job, by = c("job_status", "response"))
+
+
+practice_data_job <- practice_data_job %>%
+  pivot_longer(cols = -c("job_status", "response"),
+               names_to = "practice",
+               values_to = "count") %>%
+  mutate(percent = round((count/90)*100, digits = 0))
+
+# for the diverging plot
+
+practice_data_job <- practice_data_job %>%
+  mutate(percent = ifelse(response == "Yes",
+                          percent, 
+                         -1*percent))
+
+
+#Plot AWareness: By Profession
+
+ggplot(practice_data_job,
+       aes(x = percent, y = fct_reorder(practice, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  facet_wrap(~job_status) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(practice_data_job$percent), 
+                     labels = paste0(abs(pretty(practice_data_job$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = practice, label = paste0(abs(practice_data_job$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan() +
+  ggtitle("Use of Listed Medical Conditions By Job Status") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18),
+         strip.background = element_blank(),
+         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) +
+  guides(fill = guide_legend(reverse = FALSE))
+
+
+
+```
+
+
+
+### By years of service
+
+```{r, fig.width=8}
+
+prac_1_service <- data %>%
+  select(years_service, skipped_elig_both) %>%
+  group_by(years_service, skipped_elig_both) %>%
+  count() %>%
+  rename("Skippled EI Eligiblity Eval" = n,
+         "response" = "skipped_elig_both" )
+ 
+
+prac_2_service <- data%>%
+  select(years_service, delay_elig_both) %>%
+  group_by(years_service, delay_elig_both) %>%
+  count() %>%
+  rename("Delay in EI Eligibility Eval" = n,
+         "response" = "delay_elig_both")
+ 
+
+prac_3_service <- data%>%
+  select(years_service, difficulty_access_both) %>%
+  group_by(years_service, difficulty_access_both) %>%
+  count() %>%
+  rename("Difficulty access services" = n,
+         "response" = "difficulty_access_both")
+ 
+
+prac_4_service <- data %>%
+  select(years_service, help_colleague_both) %>%
+  group_by(years_service, help_colleague_both) %>%
+  count() %>%
+  rename("Ask for help from colleague" = n,
+         "response" = "help_colleague_both")
+  
+ 
+prac_5_service <- data %>%
+  select(years_service, searched_medcond_both) %>%
+  group_by(years_service, searched_medcond_both) %>%
+  count() %>%
+  rename("Searched for eligible\n medical conditions" = n,
+         "response" = "searched_medcond_both")
+
+
+practice_data_service <- left_join(prac_1_service, prac_2_service, by = c("years_service", "response"))
+practice_data_service <- left_join(practice_data_service, prac_3_service, by =  c("years_service", "response"))
+practice_data_service <- left_join(practice_data_service, prac_4_service, by = c("years_service", "response"))
+practice_data_service <- left_join(practice_data_service, prac_5_service, by = c("years_service", "response"))
+
+
+practice_data_service <- practice_data_service %>%
+  pivot_longer(cols = -c("years_service", "response"),
+               names_to = "practice",
+               values_to = "count") %>%
+  mutate(percent = round((count/90)*100, digits = 0))
+
+# for the diverging plot
+
+practice_data_service <- practice_data_service %>%
+  mutate(percent = ifelse(response == "Yes",
+                          percent, 
+                         -1*percent))
+
+
+#Plot AWareness: By Profession
+
+ggplot(practice_data_service,
+       aes(x = percent, y = fct_reorder(practice, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  facet_wrap(~years_service) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(practice_data_job$percent), 
+                     labels = paste0(abs(pretty(practice_data_job$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = practice, label = paste0(abs(practice_data_job$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan() +
+  ggtitle("Use of Listed Medical Conditions By Years of Service") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18),
+         strip.background = element_blank(),
+         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) +
+  guides(fill = guide_legend(reverse = FALSE))
+
+
+```
+
+### By professional role
+
+```{r, fig.width=8}
+
+
+prac_1_role <- data %>%
+  select(role, skipped_elig_both) %>%
+  group_by(role, skipped_elig_both) %>%
+  count() %>%
+  rename("Skippled EI Eligiblity Eval" = n,
+         "response" = "skipped_elig_both" )
+ 
+
+prac_2_role <- data%>%
+  select(role, delay_elig_both) %>%
+  group_by(role, delay_elig_both) %>%
+  count() %>%
+  rename("Delay in EI Eligibility Eval" = n,
+         "response" = "delay_elig_both")
+ 
+
+prac_3_role <- data%>%
+  select(role, difficulty_access_both) %>%
+  group_by(role, difficulty_access_both) %>%
+  count() %>%
+  rename("Difficulty access services" = n,
+         "response" = "difficulty_access_both")
+ 
+
+prac_4_role <- data %>%
+  select(role, help_colleague_both) %>%
+  group_by(role, help_colleague_both) %>%
+  count() %>%
+  rename("Ask for help from colleague" = n,
+         "response" = "help_colleague_both")
+  
+ 
+prac_5_role <- data %>%
+  select(role, searched_medcond_both) %>%
+  group_by(role, searched_medcond_both) %>%
+  count() %>%
+  rename("Searched for eligible\n medical conditions" = n,
+         "response" = "searched_medcond_both")
+
+
+practice_data_role <- left_join(prac_1_role, prac_2_role, by = c("role", "response"))
+practice_data_role <- left_join(practice_data_role, prac_3_role, by =  c("role", "response"))
+practice_data_role <- left_join(practice_data_role, prac_4_role, by = c("role", "response"))
+practice_data_role <- left_join(practice_data_role, prac_5_role, by = c("role", "response"))
+
+
+practice_data_role <- practice_data_role %>%
+  pivot_longer(cols = -c("role", "response"),
+               names_to = "practice",
+               values_to = "count") %>%
+  mutate(percent = round((count/90)*100, digits = 0))
+
+# for the diverging plot
+
+practice_data_role <- practice_data_role %>%
+  mutate(percent = ifelse(response == "Yes",
+                          percent, 
+                         -1*percent))
+
+
+#Plot AWareness: By Profession
+
+ggplot(practice_data_role,
+       aes(x = percent, y = fct_reorder(practice, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  facet_wrap(~role) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(practice_data_job$percent), 
+                     labels = paste0(abs(pretty(practice_data_job$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = practice, label = paste0(abs(practice_data_job$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan() +
+  ggtitle("Use of Listed Medical Conditions By Professional Role") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18),
+         strip.background = element_blank(),
+         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) +
+  guides(fill = guide_legend(reverse = FALSE))
+
+
+```
+
+
+During Covid-19 Pandemic
+==========================================
+
+Column{data-height=50%, data-width=15%}
+-----------------------------------------------------------------------
+
+### Total number of respondents fully completed this section of the survey.
+
+```{r}
+
+valueBox(87,
+         icon = "ion-person-stalker")
+
+```
+
+
+### total number of EI/ECSE professionals fully completed this section of the survey.
+
+```{r}
+
+valueBox(37,
+          icon = "ion-person-stalker")
+
+```
+
+Column {}
+-----------------------------------------------------------------------
+
+### Questions in the survey(COVID-19: For all participants)
+
+```{r, questions_covid19both}
+
+
+data%>%
+  select(elig_remote_both, delay_covid_both, decrease_both) %>%
+  drop_na() %>%
+  pivot_longer(cols = ends_with("_both"),
+               names_to = "Questions",
+               values_to = "Response") %>%
+  group_by(Questions) %>%
+  count() %>% 
+  mutate("Questions" = recode(Questions,
+                              "elig_remote_both" = "Q: Are you conducting EI eligibility evaluations remotely through phone and videoconferencing for children during Covid-19?",
+                              "delay_covid_both" = "Q: Have you experienced a delay in EI eligibility evaluation and assessment for any child diagnosed with a medical condition during Covid-19?",
+                              "decrease_both" = "Q: Have you experienced a decrease in the number of children and families in need of referral for EI eligibility evaluation or medical diagnosis during Covid-19?")) %>%
+  rename("N" = "n") %>%
+  kableExtra::kable() %>%
+  kable_styling(full_width = TRUE) %>%
+  column_spec(1, width = "20cm", background = "#F0FFFF" )
+
+
+```
+
+### Questions in the survey(COVID-19: For EI/ECSE participants only)
+
+```{r, questions_covid_ei}
+
+data%>%
+  select(`45_day`, tools_ei, hv_ei, skip_covid_ei, enrolled_ifsp_ei) %>%
+  drop_na() %>%
+  pivot_longer(cols = c(`45_day`, tools_ei, hv_ei, skip_covid_ei, enrolled_ifsp_ei),
+               names_to = "Questions",
+               values_to = "Response") %>%
+  group_by(Questions) %>%
+  count() %>% 
+  mutate("Questions" = recode(Questions,
+                              "45_day" = "Q: Are you following the 45-day timeline to do EI eligibility evaluation, assessments, and IFSP development for children during Covid-19?",
+                              "tools_ei" = "Q: Are you using only tools that can be administered by parents to do EI evaluations for children during Covid-19?",
+                              "hv_ei" = "Q: Have you met children or families in-person or made home visits for EI eligibility during Covid-19?",
+                              "skip_covid_ei" = "Q: Have you skipped EI eligibility evaluation for children with a diagnosed medical condition who have written documentation of eligibility from their physician during Covid-19?",
+                              "enrolled_ifsp_ei" = "Q: Have you enrolled children with a diagnosed medical condition with interim IFSP where EI eligibility evaluation was not possible during Covid-19?")) %>%
+  rename("N" = "n") %>%
+  kableExtra::kable() %>%
+  kable_styling(full_width = TRUE) %>%
+  column_spec(1, width = "20cm", background = "#F0FFFF" )
+
+
+
+```
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### By all participants
+
+```{r, covid_both}
+
+data_covid <- data %>%
+  select(position, elig_remote_both, decrease_both, delay_covid_both, 
+         challenges_covid_med, `45_day`, tools_ei, hv_ei, skip_covid_ei, enrolled_ifsp_ei)
+
+cov_med_ei <- data_covid %>%
+  select(elig_remote_both, decrease_both, delay_covid_both) %>%
+  drop_na()
+
+cov_med_ei_1 <- cov_med_ei %>%
+  select(elig_remote_both) %>%
+  group_by(elig_remote_both) %>%
+  count(elig_remote_both) %>%
+  rename("response" = "elig_remote_both",
+         "Remote service delivery" = "n")
+
+cov_med_ei_2 <- cov_med_ei %>%
+  select(decrease_both) %>%
+  group_by(decrease_both) %>%
+  count(decrease_both) %>%
+  rename("response" = "decrease_both",
+         "Decrease in numbers" = "n")
+  
+cov_med_ei_3 <- cov_med_ei %>%
+  select(delay_covid_both) %>%
+  group_by(delay_covid_both) %>%
+  count(delay_covid_both) %>%
+  rename("response" = "delay_covid_both",
+         "Delay in EI\n eligibility evaluation" = "n")
+
+cov_med_ei <- left_join(cov_med_ei_1, cov_med_ei_2, by = c("response"))
+cov_med_ei <- left_join(cov_med_ei, cov_med_ei_3, by = c("response"))
+
+cov_med_ei <- cov_med_ei %>%
+  pivot_longer(cols = -c(response),
+               names_to = "during_pandemic",
+               values_to = "count") %>%
+  mutate(percent = round((count/85)*100, digits = 0))
+  
+# for the diverging plot
+
+cov_med_ei <- cov_med_ei %>%
+  mutate(percent = ifelse(response == "Yes",
+                          percent, 
+                         -1*percent))
+ggplot(cov_med_ei,
+       aes(x = percent, y = fct_reorder(during_pandemic, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(cov_med_ei$percent),
+                     labels = paste0(abs(pretty(cov_med_ei$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = during_pandemic, label = paste0(abs(cov_med_ei$percent), "%")), color = "red", 
+            size = 5) +
+  #facet_wrap(~position) +
+  theme_xaringan_inverse() +
+  ggtitle("Part C EI/ECSE Eligiblity Evaluation during Covid-19 Pandemic: All Respondents") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18))
+        
+
+
+```
+
+### By EI/ECSE Professionals
+
+```{r, covid_ei}
+
+data_onepro <- data_covid %>%
+  select(position,`45_day`, tools_ei, hv_ei, skip_covid_ei, enrolled_ifsp_ei)
+
+tools <- data_onepro %>%
+  select(tools_ei) %>%
+  drop_na() %>% #47
+  group_by(tools_ei) %>%
+  count() %>%
+  rename("response" = "tools_ei",
+         "Using parent-administered\n tool only" = "n")
+  
+Met_in_person <- data_onepro %>%
+  select(hv_ei) %>%
+  drop_na() %>% #47
+  group_by(hv_ei) %>%
+  count() %>%
+  rename("response" = "hv_ei",
+         "Met children in person or made\n homevisits" = "n")
+  
+
+timeline <- data_onepro %>%
+  select(`45_day`) %>%
+  drop_na() %>%        #41
+  group_by(`45_day`) %>%
+  count() %>%
+  rename("response" = "45_day",
+         "Following 45-day timeline" = "n")
+
+skip <- data_onepro %>%
+  select(skip_covid_ei) %>%
+  drop_na() %>%         #38
+  group_by(skip_covid_ei) %>%
+  count() %>%
+  rename("response" = skip_covid_ei,
+         "Skipped evaluation for children\n with written documentation" = "n")
+  
+enrolled <- data_onepro %>%
+  select(enrolled_ifsp_ei) %>%
+  drop_na() %>%  #38
+  group_by(enrolled_ifsp_ei) %>%
+  count() %>%
+  rename("response" = "enrolled_ifsp_ei",
+         "Enrolled children with interim \nIFSP" = "n")
+
+covid_only_ei <- left_join(tools, Met_in_person, by = c("response"))
+covid_only_ei <- left_join(covid_only_ei, timeline, by = c("response"))
+covid_only_ei <- left_join(covid_only_ei, skip, by = c("response"))
+covid_only_ei <- left_join(covid_only_ei, enrolled, by = c("response"))
+
+
+covid_only_ei <- covid_only_ei %>%
+  pivot_longer(cols = c("Using parent-administered\n tool only",
+                        "Met children in person or made\n homevisits",
+                        "Following 45-day timeline",
+                        "Skipped evaluation for children\n with written documentation",
+                        "Enrolled children with interim \nIFSP"),
+               names_to = "during_pandemic",
+               values_to = "count") %>%
+  mutate(percent = round((count/47)*100, digits = 0))
+
+
+
+# for the diverging plot
+
+covid_only_ei <- covid_only_ei %>%
+  mutate(percent = ifelse(response == "Yes",
+                          percent, 
+                         -1*percent))
+
+
+ggplot(covid_only_ei,
+       aes(x = percent, y = fct_reorder(during_pandemic, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(covid_only_ei$percent),
+                     labels = paste0(abs(pretty(covid_only_ei$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = during_pandemic, label = paste0(abs(covid_only_ei$percent), "%")), color = "red", 
+            size = 5) +
+  #facet_wrap(~position) +
+  theme_xaringan_inverse() +
+  ggtitle("Part C EI/ECSE Eligiblity Evaluation during Covid-19 Pandemic: Response by EI/ECSE Professionals") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18))
+        
+
+
+```
+
+
+Views on Current List
+=========================================
+
+Column{data-height=50%, data-width=20%}
+-----------------------------------------------------------------------
+
+### Cronbach's alpha to measure how closely related set of questions are to indicate participants' views on changes they expect in listed medical conditions.
+
+```{r}
+
+valueBox(0.64,
+         icon = "fas fa-thumbs-up")
+
+```
+
+
+### Total number of respondents fully completed this section of the survey.
+
+```{r}
+
+valueBox(81,
+         icon = "ion-person-stalker")
+
+```
+
+
+Column {data-width=300}
+-----------------------------------------------------------------------
+
+
+```{r}
+
+### Questions
+
+data%>%
+  select(15:18) %>%
+  drop_na() %>%
+  pivot_longer(cols = ends_with("_both"),
+               names_to = "Questions",
+               values_to = "Response") %>%
+  group_by(Questions) %>%
+  count() %>% 
+  mutate("Questions" = recode(Questions,
+                              "detail_help_both" = "Q: In your opinion, would a more detailed and comprehensive list of medical conditions help to decide when EI eligibility evaluations can be skipped and direct referral be made for EI assessment?",
+                              "detail_need_both" = "Q: In your opinion, is having a more detailed and comprehensive medical conditions list for EI eligibility determination in Oregon needed?",
+                              "detail_covid_both" = "Q: In your opinion, a more detailed and comprehensive medical conditions list would have been helpful during Covid-19?",
+                              "info_adequate_both" = "Q: Do you think that information on medical conditions listed in the Oregon State Plan policy guidance is adequate for deciding to carry out an EI eligibility evaluation?")) %>%
+  rename("N" = "n") %>%
+  kableExtra::kable() %>%
+  kable_styling(full_width = TRUE) %>%
+  column_spec(1, width = "15cm", background = "#F0FFFF" )
+  
+```
+
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+
+
+### By All Participants
+
+```{r, change_all}
+
+data_rec_overall <- data %>%
+  select(info_adequate_both, detail_need_both, detail_help_both, detail_covid_both) %>%
+  drop_na()
+
+
+rec1 <- data_rec_overall %>%
+  select(info_adequate_both) %>%
+  group_by(info_adequate_both) %>%
+  count(info_adequate_both) %>%
+  rename("response" = "info_adequate_both",
+         "Adequate information\n is given" = "n")
+
+
+rec2 <- data_rec_overall %>%
+  select(detail_need_both) %>%
+  group_by(detail_need_both) %>%
+  count(detail_need_both) %>%
+  rename("response" = "detail_need_both",
+         "Detailed list\nis needed" = "n")
+  
+
+rec3 <- data_rec_overall %>%
+  select(detail_help_both) %>%
+  group_by(detail_help_both) %>%
+  count(detail_help_both) %>%
+  rename("response" = "detail_help_both",
+         "Detailed list\n would be helpful" = "n")
+ 
+
+
+rec4 <- data_rec_overall %>%
+  select(detail_covid_both) %>%
+  group_by(detail_covid_both) %>%
+  count(detail_covid_both) %>%
+  rename("response" = "detail_covid_both",
+         "Detailed list during\n Covid-19 is needed" = "n")
+
+
+
+rec_overall <- left_join(rec1, rec2, by = "response")
+rec_overall <- left_join(rec_overall, rec3, by = "response")
+rec_overall <- left_join(rec_overall, rec4, by = "response")
+
+
+rec_overall <- rec_overall %>%
+  pivot_longer(cols = -response,
+               names_to = "information",
+               values_to = "count") %>%
+  mutate(percent = round((count/81)*100, digits = 0))
+
+
+# for the diverging plot
+
+rec_overall <- rec_overall %>%
+  mutate(percent = ifelse(response == "Yes",
+                          percent, 
+                         -1*percent))
+
+ggplot(rec_overall,
+       aes(x = percent, y = fct_reorder(information, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(rec_overall$percent),
+                     labels = paste0(abs(pretty(rec_overall$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = information, label = paste0(abs(rec_overall$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan_inverse() +
+  ggtitle("Views on Listed Medical Conditions for Part C EI/ECSE Services") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18))
+        
+
+
+```
+
+### By Profession
+
+```{r}
+data_rec <- data %>%
+  select(position, info_adequate_both, detail_need_both, detail_help_both, detail_covid_both) %>%
+  drop_na()
+
+
+pos_rec1 <- data_rec %>%
+  select(position, info_adequate_both) %>%
+  group_by(position, info_adequate_both) %>%
+  count(info_adequate_both) %>%
+  rename("response" = "info_adequate_both",
+         "Adequate information\n is given ?" = "n")
+
+
+pos_rec2 <- data_rec %>%
+  select(position, detail_need_both) %>%
+  group_by(position, detail_need_both) %>%
+  count(detail_need_both) %>%
+  rename("response" = "detail_need_both",
+         "Detailed list\nis needed ?" = "n")
+  
+
+pos_rec3 <- data_rec %>%
+  select(position, detail_help_both) %>%
+  group_by(position, detail_help_both) %>%
+  count(detail_help_both) %>%
+  rename("response" = "detail_help_both",
+         "Detailed list\n would be helpful ?" = "n")
+ 
+
+
+pos_rec4 <- data_rec %>%
+  select(position, detail_covid_both) %>%
+  group_by(position, detail_covid_both) %>%
+  count(detail_covid_both) %>%
+  rename("response" = "detail_covid_both",
+         "Detailed list during\n Covid-19 is needed ?" = "n")
+
+
+
+data_reccomended <- left_join(pos_rec1, pos_rec2, by = c("position", "response"))
+data_reccomended <- left_join(data_reccomended, pos_rec3, by = c("position", "response"))
+data_reccomended <- left_join(data_reccomended, pos_rec4, by = c("position", "response"))
+
+data_reccomended <- data_reccomended %>%
+  pivot_longer(cols = -c(position, response),
+               names_to = "information",
+               values_to = "count") %>%
+  mutate(percent = round((count/81)*100, digits = 0))
+
+# for the diverging plot
+
+data_reccomended <- data_reccomended %>%
+  mutate(percent = ifelse(response == "Yes",
+                          percent, 
+                         -1*percent))
+
+ggplot(data_reccomended,
+       aes(x = percent, y = fct_reorder(information, percent), fill = response)) +
+  geom_bar(aes(fill = response), stat = "identity", position = "identity", width = 0.4) +
+  facet_wrap(~position) +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  colorblindr::scale_fill_OkabeIto(name = "response") +
+  scale_x_continuous(breaks = pretty(data_reccomended$percent),
+                     labels = paste0(abs(pretty(data_reccomended$percent)), "%")) +
+  geom_text(aes(x = percent/2, y = information, label = paste0(abs(data_reccomended$percent), "%")), color = "red", 
+            size = 5) +
+  theme_xaringan_inverse() +
+  ggtitle("Views on Listed Medical Conditions for Part C EI/ECSE Services by Profession") +
+   theme(axis.title = element_blank(),
+         panel.grid.minor = element_blank(),
+         legend.title = element_blank(),
+         legend.position = "bottom",
+         legend.direction = "horizontal",
+         plot.title.position = "plot",
+         axis.text=element_text(size=18),
+         plot.title = element_text(color="red", size=20, hjust = 0.5),
+         legend.text = element_text(size = 18),
+         strip.background = element_blank(),
+         strip.text = element_text(face="bold", size = 18, color = "yellow", hjust = 0.5))
+
+
+
+```
+
+
+
+
+Findings
+========================================
+
+Row
+-------------------------------------
+    
+### RQ1: To what extent are EI professionals aware of the categories of medical conditions that are listed in the Oregon State Plan policy guidance? (AWARENESS)
+Overall analysis showed that 74% are aware of the medical conditions listed in the Oregon State Plan Policy guidance, 72% are aware of the medical documents and reports that constitute written documentation of eligibility, 68% know that there are medical conditions that may not be presently adversely affecting child's development, and 56% are aware that there are medical conditions eligible for Part C services but may not be listed in the policy guidance. When results were analyzed by profession, significant differences were found in the awareness of healthcare and EI/ECSE professionals where 21% of healthcare professionals are aware and 19% are not aware of the medical conditions list. Among healthcare professionals, 18% are aware and 22% are not aware of the written documentation of Part C eligibility, 19% are aware and 22% are not aware that there are medical conditions that may not be presently affecting the child's development, and only 13% are aware and 27% are not aware that there are medical conditions that may be eligible for Part C services but are not listed in the policy documents. No significant differences were found based on job status (full-time vs part-time), years of service, and professional role, however, a lower number of professionals (27% vs 31%) with less than 15 years of experience reported to be aware of medical conditions that may be eligible for EI/ECSE services but not listed. Analysis based on professional role indicated that 24% of professionals whose role is to make referrals or provide medical diagnosis are aware of the medical conditions that may be eligible for services but not listed whereas 30% reported being unaware.
+Cronbach's alpha score of 0.73 indicates higher internal consistencies among 4 items with binary response in the survey that were asked to explore the awareness level. 
+
+
+
+
+
+    
+```{r}
+
+
+```
+ 
+### RQ2: How are the categories of medical conditions that are listed in the Oregon State Plan policy guidance are understood and used by professionals in EI eligibility evaluations and assessments for birth to 5-year-old-children in Oregon? (IN PRACTICE)
+Results were analyzed based on the overall response, profession, job status, years of service, and professional role. Consistent results were found across all groups indicating limited use of medical conditions list due to lack of information. Overall analysis indicates that 77% of professionals ask for information on medical conditions from colleague to decide on EI referrals and eligibility evaluation, 58% have experienced a delay in EI eligibility evaluation due to lack of information, 57% have experienced a delay in timely receipt of EI services for children with diagnosed medical conditions, and 53% have looked for more information on medical conditions for EI eligibility determination.
+Sixty-eight percent reported that they have not skipped EI eligibility evaluation for children with diagnosed medical conditions that have a high probability of developmental delay.
+
+
+    
+```{r}
+
+
+``` 
+
+Row
+-------------------------------------
+    
+
+### RQ3: How and to what extent are EI eligibility evaluation and assessments for children with diagnosed medical conditions impacted during the covid-19 restrictions? (During COVID-19)
+
+During the COVID-19 pandemic, 94% professionals reported to provide services remotely, 62% experienced delay in EI eligiblity determination for children with diagnosed medical conditions, and 48% have experienced decrease in number of children accessing healthcare and part C EI/ECSE services.
+A set of questions were asked only from EI/ECSE professionals to explore the state of uptake of EI/ECSE serivces during the pandemic where 77% reported to follow the 45-day timeline to do EI eligibility evaluation, assessments and IFSP development. Forty percent EI/ECSE professionals are using only tools that can be administered by parents during the COVID-19 pandemic and 30% reported to meet children and families in-person or in home visits. 
+Only 23% EI/ECSE professionals have reported to skip EI eligibility evaluation for children referred with written documentation of eligibility, and 9% reported to enroll children with interim IFSP where EI eligibility evaluation was not possible for children with diagnosed medical conditions during the COVID-19 pandemic. Low percentage of professionals reporting to skip EI eligibility evaluation and enrolling children with interim IFSP indicate lack of awareness or information among EI/ECSE professionals of federal regulations on children referred with diagnoed medical conditions that have a high probability of developmental delay or disability. 
+
+```{r}
+
+```
+
+### RQ4: What changes do EI professionals in Oregon recommend in the level of information provided about the categories of medical conditions that are likely to result in developmental delay? (VIEWS)    
+The analysis resulted in a consistent response from EI/ECSE and healthcare professionals in terms of changes they would prefer in medical conditions listed in the Oregon State Plan Policy guidance. Ninety percent reported having a more detailed and comprehensive list would help to decide when EI eligibility evaluations can be skipped and direct referrals are made for EI assessments and 86% percent agreed that a more detailed and comprehensive list of diagnosed medical conditions is needed in Oregon. Seventy-nice percent said a detailed and comprehensive list would have been helpful during the COVID-19 pandemic. Sixty-five percent said adequate information is not provided in the list of medical conditions that make children eligible for Part C EI/ECSE services in Oregon.
+
+    
+```{r}
+
+
+
+```

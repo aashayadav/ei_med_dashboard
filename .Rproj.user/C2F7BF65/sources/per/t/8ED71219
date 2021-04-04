@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1617317519858.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4207601057",
+    "id" : "8ED71219",
+    "lastKnownWriteTime" : 1617318021,
+    "last_content_update" : 1617318021626,
+    "path" : "C:/Users/asha/Dropbox (University of Oregon)/Current Research 2020/Jane's res work- EI eligibility/data analysis/ei_med_dashboard/ei_med_dashboard.Rmd",
+    "project_path" : "ei_med_dashboard.Rmd",
+    "properties" : {
+        "cursorPosition" : "10,0",
+        "last_setup_crc32" : "13988D8B82113356",
+        "scrollLine" : "2",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
