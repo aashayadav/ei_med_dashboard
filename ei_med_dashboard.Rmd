@@ -34,16 +34,25 @@ library(here)
 library(ggthemes)
 library(ggpubr)
 library(psych)
+#install.packages("devtools")
+library(devtools)
+#remotes::install_github("wilkelab/cowplot")
+#install.packages("colorspace", repos = "http://R-Forge.R-project.org")
+#remotes::install_github("clauswilke/colorblindr")
+library(colorspace)
+library(ggplot2)
 library(colorblindr)
 library(scales)
 #install.packages("showtext")
 library(showtext)
-library(xaringanthemer)
+
 library(gt)
 library(kableExtra)
 #install.packages("dygraphs")
 library(dygraphs)
 library(plotly)
+devtools::install_github("gadenbuie/xaringanthemer")
+library(xaringanthemer)
 
 
 
@@ -60,16 +69,14 @@ data <- import(here::here("data", "ei_eligibility.xlsx"))
 
 ```{r xaringan-themer, include=FALSE, warning = FALSE}
 
-library(xaringanthemer)
 style_mono_accent(
-  base_color = "#DC322F",               # bright red
+  base_color = "#DC322F", #  bright red
   inverse_background_color = "#002B36", # dark dark blue
   inverse_header_color = "#31b09e",     # light aqua green
   inverse_text_color = "#FFFFFF",       # white
   title_slide_background_color = "var(--base)",
-  text_font_google = google_font("Kelly Slab", "100", "100i"),
-  header_font_google = google_font("Hind", "100", "100i")
-)
+  text_font_google = google_font("Kelly Slab","100", "100i"),
+  header_font_google = google_font("Hind","100","100i"))
 
 ```
 
@@ -83,10 +90,10 @@ Column
 ### About the study
 Part C Early Intervention/Early Childhood Special Education (EI/ECSE) services are federally-funded, statewide system that provides coordinated services to parents of birth to 5-year-old children who have or are at-risk of developmental delay or disability. Eligibility for Part C services is determined by state's definition of developmental delay and medical conditions that have a high probability of disability. There is no consistency in how different states define diagnosed medical conditions that give children access to Part C EI/ECSE services. A study conducted by Barger et al. posits that the wide heterogeniety in number and type of medical conditions may lead to imbalance in children gaining access to IDEA Part C services.
 Therefore, the purpose of this study was to explore the understanding and use of categories of diagnosed medical conditions in Part C eligibility determination, from the perspective of EI/ECSE and healthcare professionals in the state of Oregon.  
-**METHOD:** The embedded mixed-method design was adopted where the qualitative (interview) form of data collection was nested within the quanitative form (survey). Data collection from the survey and semi-structured interviews occured simultaneously where the interview data was used to verify the findings derived from the survey data.  
+**METHOD:** The embedded mixed-method design was adopted where the qualitative (interview) form of data collection was nested within the quantiative form (survey). Data collection from the survey and semi-structured interviews occured simultaneously where the interview data was used to verify the findings derived from the survey data.  
 **PARTICIPANTS:** Part C EI/ECSE professionals and pediatricians and family physicans were approached across Oregon. Online survey was filled by **90 professionals** and **18 professionals** attented the semi-structure interview. 
 Permission to conduct the study was granted by the Institution Review Board at the University of Oregon.<br />
-**Protocol:09032020.003**
+**Protocol: 09032020.003**
 
 
 ### Descriptive analysis
