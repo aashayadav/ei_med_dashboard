@@ -1845,12 +1845,27 @@ grViz("digraph{
  
  node[shape = rectangle, style = filled]
  node[fillcolor = Coral, margin = 0.2]
- A[label = 'Aware of the list']
- B[label = 'List is helpful(Parents)']
- C[label = 'List is helpful(Professional']
- D[label = 'Refer to the list']
+ A[label = 'Code: Aware of the list']
+ B[label = 'Code: List is helpful(Parents)']
+ C[label = 'Code: List is helpful(Professional']
+ D[label = 'Code: Refer to the list']
  
  subgraph cluster_0 {
+ graph[shape = rectangle]
+ style = rounded
+ bgcolor = 'lightblue'
+ label = 'Response'
+ node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+ 
+ R1[label = 'I was familiar with the condition \nStatement that child could be eligible\n under that so it was just part\n of learning about the job initially\n but not part of the training that I had.']
+ 
+ R3[label = 'It is publicly available but I do \nnot know that parents know that document. \nIt is buried with in documents that\n a parent would be going like oh\n yeah I know where that is at.']
+ 
+ R4[label = 'Oh! We may have our own list of\n what we interpret as the state of \nOregon as accepting as a category for\n other health impairment, emotional \ndisturbance, specific learning disability.']
+ }
+  
+ 
+ subgraph cluster_1 {
  graph[shape = rectangle]
  style = rounded
  bgcolor = Gold
@@ -1861,25 +1876,26 @@ grViz("digraph{
  
  }
  
- subgraph cluster_3 {
+ subgraph cluster_2 {
  graph[shape = rectangle]
  style = rounded
- bgcolor = Gold
- 
- label = 'THEMES'
+ bgcolor = 'green'
+ label = 'Summary'
  node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
- Z1[label = 'Medical conditions list']
- 
- }
+ S1[label = 'I was familiar with the condition \nStatement that child could be eligible\n under that 
+ so it was just part\n of learning about the job initially\n but not part of the training that I had.']
  
  edge[color = black, arrowhead = vee, arrowsize = 1.25]
  Z1 -> {A B C D}
-
-}")
+ B -> {R3}
+ D -> {R4}
+ A -> {R1}
+ Response -> {S1}
+ }
+ }")
 
 
 ```
-
 ### Theme 2: In-Practice
 
 ```{r}
@@ -1908,7 +1924,7 @@ grViz("digraph{
       style = rounded
       bgcolor = Gold
       
-      label = 'THEME_2'
+      label = 'THEME'
       node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
       Z2[label = 'In-Practice']
       
@@ -1945,7 +1961,7 @@ grViz("digraph{
  graph[shape = rectangle]
  style = rounded
  bgcolor = Gold
- label = 'THEMES'
+ label = 'THEME'
  node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
  Z3[label = 'During Covid-19 Pandemic']
  }
@@ -1980,7 +1996,7 @@ grViz("digraph{
  graph[shape = rectangle]
  style = rounded
  bgcolor = Gold
- label = 'THEMES'
+ label = 'THEME'
  node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
  Z4[label = 'Recommendations']
  }
