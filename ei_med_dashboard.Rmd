@@ -2169,7 +2169,7 @@ grViz("digraph{
  graph[shape = rectangle]
  style = rounded
  bgcolor = DarkSeaGreen
- label = 'THEME'
+ label = 'Theme'
  node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
  Z1[label = 'Recommendations']
  
