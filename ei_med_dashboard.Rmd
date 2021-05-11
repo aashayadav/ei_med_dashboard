@@ -89,16 +89,24 @@ Descriptive
 
 Column
 -----------------------------------------------------------------------
-### About the study
-Part C Early Intervention/Early Childhood Special Education (EI/ECSE) services are federally-funded, statewide system that provides coordinated services to parents of birth to 5-year-old children who have or are at-risk of developmental delay or disability. Eligibility for Part C services is determined by state's definition of developmental delay and medical conditions that have a high probability of disability. There is no consistency in how different states define diagnosed medical conditions that give children access to Part C EI/ECSE services. A study conducted by Barger et al. posits that the wide heterogeniety in number and type of medical conditions may lead to imbalance in children gaining access to IDEA Part C services.
-Therefore, the purpose of this study was to explore the understanding and use of categories of diagnosed medical conditions in Part C eligibility determination, from the perspective of EI/ECSE and healthcare professionals in the state of Oregon.  
-**METHOD:** The embedded mixed-method design was adopted where the qualitative (interview) form of data collection was nested within the quantiative form (survey). Data collection from the survey and semi-structured interviews occured simultaneously where the interview data was used to verify the findings derived from the survey data.  
-**PARTICIPANTS:** Part C EI/ECSE professionals and pediatricians and family physicans were approached across Oregon. Online survey was filled by **90 professionals** and **18 professionals** attented the semi-structure interview. 
-Permission to conduct the study was granted by the Institution Review Board at the University of Oregon.<br />
+### **About the study**
+**Objective:**
+The study aims to explore the awareness and use of the list of diagnosed medical conditions in Part C eligibility determination, from the perspective of the Early Intervention and Early Childhood Special Education (EI/ECSE), and healthcare professionals in the state of Oregon. 
+
+**Methods:** 
+The embedded mixed-method design was adopted where the qualitative (interviews) data were nested within the quantitative  (an electronic survey). Data from the survey and semi-structured interviews were collected simultaneously between November 2020 to January 2021. Responses were analyzed using descriptive statistics and thematic coding. 
+
+**Results:** 
+A total of 90 EI/ECSE and healthcare professionals responded to the electronic survey and 18 professionals attended the semi-structured interviews. The mixed-method analysis indicates that 74% of professionals are aware of the eligible medical conditions, however, when they were shown the Oregon list of medical conditions, they reported not to have seen the list before. The majority of professionals (77%) reported they seek help from colleagues to decide EI referrals and eligibility evaluation instead of using the list. 
+As an urgent response to the covid-19 pandemic, professionals (94%) shifted to an online platform for evaluations, assessments, and other services. Professionals reported a severe decrease in the number of referrals (48%) and delay in EI eligibility determination (62%) for children with diagnosed medical conditions. 
+Professionals greatly agreed in their replies that the current list does not contain adequate information (65%) and they do not refer to it for eligibility determination. The three most agreed recommendations are to have a more comprehensive, detailed list(86%) especially during   covid-19 (79%), widely circulated and embedded within the current system such as in the universal referral form and the evaluation packet in EI programs. 
+
+**Conclusion:** 
+Lack of awareness, access, and inconsistent use of the list of diagnosed medical conditions that give children direct access to Part C EI/ECSE services can lead to an imbalance in number and timely receipt of Part C EI services in Oregon. A comprehensive list in a user-friendly language is needed. The list needs to be embedded in the existing systems for its long-term sustainable use and seamless cross-sectoral referral and evaluation.
+
 **Protocol: 09032020.003**
 
-
-### Descriptive analysis
+### **Descriptive analysis**
 
 ```{r}
 
@@ -179,7 +187,7 @@ table_role <- data%>%
 table_data <- bind_rows(table_pos, table_job_status, table_role, table_years_service) %>%
   rename("N" = "n",
          "Percent" = "percent")
-table_data
+
 table_data %>%
   unite(Participants, position, job_status, role, years_service, na.rm = TRUE) %>%
   kableExtra::kable() %>%
@@ -197,7 +205,7 @@ table_data %>%
 Column {data-width=500}
 -----------------------------------------------------------------------
 
-### Chart A: Survey participants across Oregon. 
+### **Chart A: Survey participants across Oregon** 
 Participants represented all 36 counties in Oregon. "Multiple" includes participants working in more than one county.
 
 ```{r}
@@ -240,17 +248,17 @@ county_data %>%
   scale_x_continuous(breaks = pretty(county_data$perc), 
                     labels = paste0((pretty(county_data$perc)), "%"),
                     expand = c(0, 0)) +
-  geom_text(aes(label = paste0(county_data$perc, "%")), color = "black", size = 5, hjust = -0.5) +
+  geom_text(aes(label = paste0(county_data$perc, "%")), color = "black", size = 4, hjust = -0.5) +
   theme_xaringan() +
   labs(x = "Percentage of respondents across Oregon",
        y = NULL,
        title = "Survey Participants Across Oregon") +
   theme(legend.position = "none",
         plot.title.position = "plot",
-        plot.title = element_text(size = 20),
-        axis.title.x = element_text(size = 20),
-        axis.text.y = element_text(size = 15),
-        axis.text.x = element_text(size = 15))
+        plot.title = element_text(size = 15),
+        axis.title.x = element_text(size = 15),
+        axis.text.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12))
  
     
   
@@ -369,22 +377,22 @@ aware_3 <- data%>%
   select(aware_3_both) %>%
   group_by(aware_3_both) %>%
   count() %>%
-  rename("Med. Cond. Presently Not Affecting" = n)
+  rename("Med. Cond. Presently \nNot Affecting" = n)
  
 
 aware_4 <- data %>%
   select(aware_4_both) %>%
   group_by(aware_4_both) %>%
   count() %>%
-  rename("Written Documentation of Eligibility" = n)
+  rename("Written Documentation \nof Eligibility" = n)
   
  
 
 aware_plot <- bind_cols(aware_1, aware_2, aware_3, aware_4) %>%
-  select(aware_1_both, "Aware of Med. Condition","Elig Med. Cond. Not Listed","Med. Cond. Presently Not Affecting",
-         "Written Documentation of Eligibility") %>% 
+  select(aware_1_both, "Aware of Med. Condition","Elig Med. Cond. Not Listed","Med. Cond. Presently \nNot Affecting",
+         "Written Documentation \nof Eligibility") %>% 
   pivot_longer(cols = c("Aware of Med. Condition","Elig Med. Cond. Not Listed",
-                        "Med. Cond. Presently Not Affecting", "Written Documentation of Eligibility"),
+                        "Med. Cond. Presently \nNot Affecting", "Written Documentation \nof Eligibility"),
                names_to = "aware",
                values_to = "count") %>%
   mutate(percent = round((count/90)*100, digits = 0))
@@ -414,18 +422,18 @@ ggplot(aware_plot,
   scale_x_continuous(breaks = pretty(aware_plot$percent), 
                      labels = paste0(abs(pretty(aware_plot$percent)), "%")) +
   geom_text(aes(x = percent/2, y = aware, label = paste0(abs(aware_plot$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan() +
-  ggtitle("Awareness of Listed Medical Conditions Eligible for Part C EI/ECSE Services: All participants") +
+  ggtitle("Awareness of Listed Medical Conditions Eligible for \nPart C EI/ECSE Services: All participants") +
    theme(axis.title = element_blank(),
          panel.grid.minor = element_blank(),
          legend.title = element_blank(),
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18)) +
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=12, hjust = 0.5),
+         legend.text = element_text(size = 15)) +
   guides(fill = guide_legend(reverse = TRUE))
 
   
@@ -511,23 +519,23 @@ ggplot(data_pos,
                 y = aware, 
                 label = paste0(abs(data_pos$percent), "%")), 
             color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan() +
-  ggtitle("Awareness of Listed Medical Conditions for Part C EI/ECSE Service by Profession") +
+  ggtitle("Awareness of Listed Medical Conditions for \nPart C EI/ECSE Service by Profession") +
   theme(axis.title = element_blank(),
         panel.grid.minor = element_blank(),
         legend.title = element_blank(),
         legend.position = "bottom",
         legend.direction = "horizontal",
         plot.title.position = "plot",
-        axis.text=element_text(size=18),
+        axis.text=element_text(size=12),
         plot.title = element_text(color="red", 
-                                  size=20, 
+                                  size=12, 
                                   hjust = 0.5),
-        legend.text = element_text(size = 18),
+        legend.text = element_text(size = 15),
         strip.background = element_blank(),
         strip.text = element_text(face="bold", 
-                                  size = 18, 
+                                  size = 12, 
                                   color = "#d55e00", 
                                   hjust = 0.5)) +
 guides(fill = guide_legend(reverse = TRUE)) 
@@ -606,20 +614,20 @@ ggplot(status_data,
   scale_x_continuous(breaks = pretty(status_data$percent),
                      labels = paste0(abs(pretty(status_data$percent)), "%")) +
   geom_text(aes(x = percent/2, y = aware, label = paste0(abs(status_data$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan() +
-  ggtitle("Awareness of Listed Medical Conditions for Part C EI/ECSE Services by Job Status") +
+  ggtitle("Awareness of Listed Medical Conditions for \nPart C EI/ECSE Services by Job Status") +
    theme(axis.title = element_blank(),
          panel.grid.minor = element_blank(),
          legend.title = element_blank(),
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18),
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=12, hjust = 0.5),
+         legend.text = element_text(size = 15),
          strip.background = element_blank(),
-         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) + 
+         strip.text = element_text(face="bold", size = 12, color = "#d55e00", hjust = 0.5)) + 
   guides(fill = guide_legend(reverse = TRUE))
 
 
@@ -691,20 +699,20 @@ ggplot(service_data,
   scale_x_continuous(breaks = pretty(service_data$percent),
                      labels = paste0(abs(pretty(service_data$percent)), "%")) +
   geom_text(aes(x = percent/2, y = aware, label = paste0(abs(service_data$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan() +
-  ggtitle("Awareness of Listed Medical Conditions for Part C EI/ECSE Services by Job Status") +
+  ggtitle("Awareness of Listed Medical Conditions for \nPart C EI/ECSE Services by Job Status") +
    theme(axis.title = element_blank(),
          panel.grid.minor = element_blank(),
          legend.title = element_blank(),
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18),
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=12, hjust = 0.5),
+         legend.text = element_text(size = 15),
          strip.background = element_blank(),
-         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) +
+         strip.text = element_text(face="bold", size = 12, color = "#d55e00", hjust = 0.5)) +
   guides(fill = guide_legend(reverse = TRUE)) 
   
 
@@ -787,20 +795,20 @@ ggplot(role_data,
   scale_x_continuous(breaks = pretty(role_data$percent),
                      labels = paste0(abs(pretty(role_data$percent)), "%")) +
   geom_text(aes(x = percent/2, y = aware, label = paste0(abs(role_data$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan() +
-  ggtitle("Awareness of Listed Medical Conditions for Part C EI/ECSE Services by Professional Role") +
+  ggtitle("Awareness of Listed Medical Conditions for Part C EI/ECSE \nServices by Professional Role") +
    theme(axis.title = element_blank(),
          panel.grid.minor = element_blank(),
          legend.title = element_blank(),
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18),
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=12, hjust = 0.5),
+         legend.text = element_text(size = 15),
          strip.background = element_blank(),
-         strip.text = element_text(size = 18, color = "#d55e00", hjust = 0.5)) + 
+         strip.text = element_text(size = 12, color = "#d55e00", hjust = 0.5)) + 
   guides(fill = guide_legend(reverse = TRUE))
 
 
@@ -903,7 +911,7 @@ prac_5_all <- data %>%
   select(searched_medcond_both) %>%
   group_by(searched_medcond_both) %>%
   count() %>%
-  rename("Searched for eligible medical conditions" = n,
+  rename("Searched for eligible \nmedical conditions" = n,
          "response" = "searched_medcond_both")
 
 
@@ -936,7 +944,7 @@ ggplot(practice_data,
   scale_x_continuous(breaks = pretty(practice_data$percent), 
                      labels = paste0(abs(pretty(practice_data$percent)), "%")) +
   geom_text(aes(x = percent/2, y = practice, label = paste0(abs(practice_data$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan() +
   ggtitle("Use of Listed Medical Conditions in Practice") +
    theme(axis.title = element_blank(),
@@ -945,9 +953,9 @@ ggplot(practice_data,
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18)) +
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=12, hjust = 0.5),
+         legend.text = element_text(size = 12)) +
   guides(fill = guide_legend(reverse = FALSE))
 
   
@@ -1029,7 +1037,7 @@ ggplot(practice_data_pro,
   scale_x_continuous(breaks = pretty(practice_data_pro$percent), 
                      labels = paste0(abs(pretty(practice_data_pro$percent)), "%")) +
   geom_text(aes(x = percent/2, y = practice, label = paste0(abs(practice_data_pro$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan() +
   ggtitle("Use of Listed Medical Conditions By Profession") +
    theme(axis.title = element_blank(),
@@ -1038,11 +1046,11 @@ ggplot(practice_data_pro,
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18),
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=15, hjust = 0.5),
+         legend.text = element_text(size = 15),
          strip.background = element_blank(),
-         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) +
+         strip.text = element_text(face="bold", size = 15, color = "#d55e00", hjust = 0.5)) +
   guides(fill = guide_legend(reverse = FALSE))
 
 
@@ -1124,7 +1132,7 @@ ggplot(practice_data_job,
   scale_x_continuous(breaks = pretty(practice_data_job$percent), 
                      labels = paste0(abs(pretty(practice_data_job$percent)), "%")) +
   geom_text(aes(x = percent/2, y = practice, label = paste0(abs(practice_data_job$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan() +
   ggtitle("Use of Listed Medical Conditions By Job Status") +
    theme(axis.title = element_blank(),
@@ -1133,11 +1141,11 @@ ggplot(practice_data_job,
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18),
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=15, hjust = 0.5),
+         legend.text = element_text(size = 15),
          strip.background = element_blank(),
-         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) +
+         strip.text = element_text(face="bold", size = 15, color = "#d55e00", hjust = 0.5)) +
   guides(fill = guide_legend(reverse = FALSE))
 
 
@@ -1221,7 +1229,7 @@ ggplot(practice_data_service,
   scale_x_continuous(breaks = pretty(practice_data_job$percent), 
                      labels = paste0(abs(pretty(practice_data_job$percent)), "%")) +
   geom_text(aes(x = percent/2, y = practice, label = paste0(abs(practice_data_job$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan() +
   ggtitle("Use of Listed Medical Conditions By Years of Service") +
    theme(axis.title = element_blank(),
@@ -1230,11 +1238,11 @@ ggplot(practice_data_service,
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18),
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=15, hjust = 0.5),
+         legend.text = element_text(size = 15),
          strip.background = element_blank(),
-         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) +
+         strip.text = element_text(face="bold", size = 15, color = "#d55e00", hjust = 0.5)) +
   guides(fill = guide_legend(reverse = FALSE))
 
 
@@ -1316,7 +1324,7 @@ ggplot(practice_data_role,
   scale_x_continuous(breaks = pretty(practice_data_job$percent), 
                      labels = paste0(abs(pretty(practice_data_job$percent)), "%")) +
   geom_text(aes(x = percent/2, y = practice, label = paste0(abs(practice_data_job$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan() +
   ggtitle("Use of Listed Medical Conditions By Professional Role") +
    theme(axis.title = element_blank(),
@@ -1325,11 +1333,11 @@ ggplot(practice_data_role,
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18),
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=15, hjust = 0.5),
+         legend.text = element_text(size = 15),
          strip.background = element_blank(),
-         strip.text = element_text(face="bold", size = 18, color = "#d55e00", hjust = 0.5)) +
+         strip.text = element_text(face="bold", size = 12, color = "#d55e00", hjust = 0.5)) +
   guides(fill = guide_legend(reverse = FALSE))
 
 
@@ -1475,19 +1483,19 @@ ggplot(cov_med_ei,
   scale_x_continuous(breaks = pretty(cov_med_ei$percent),
                      labels = paste0(abs(pretty(cov_med_ei$percent)), "%")) +
   geom_text(aes(x = percent/2, y = during_pandemic, label = paste0(abs(cov_med_ei$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   #facet_wrap(~position) +
   theme_xaringan_inverse() +
-  ggtitle("Part C EI/ECSE Eligiblity Evaluation during Covid-19 Pandemic: All Respondents") +
+  ggtitle("Part C EI/ECSE Eligiblity Evaluation during \nCovid-19 Pandemic: All Respondents") +
    theme(axis.title = element_blank(),
          panel.grid.minor = element_blank(),
          legend.title = element_blank(),
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18))
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=15, hjust = 0.5),
+         legend.text = element_text(size = 15))
         
 
 
@@ -1575,19 +1583,19 @@ ggplot(covid_only_ei,
   scale_x_continuous(breaks = pretty(covid_only_ei$percent),
                      labels = paste0(abs(pretty(covid_only_ei$percent)), "%")) +
   geom_text(aes(x = percent/2, y = during_pandemic, label = paste0(abs(covid_only_ei$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   #facet_wrap(~position) +
   theme_xaringan_inverse() +
-  ggtitle("Part C EI/ECSE Eligiblity Evaluation during Covid-19 Pandemic: Response by EI/ECSE Professionals") +
+  ggtitle("Part C EI/ECSE Eligiblity Evaluation during Covid-19 Pandemic: \nResponse by EI/ECSE Professionals") +
    theme(axis.title = element_blank(),
          panel.grid.minor = element_blank(),
          legend.title = element_blank(),
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18))
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=15, hjust = 0.5),
+         legend.text = element_text(size = 15))
         
 
 
@@ -1725,18 +1733,18 @@ ggplot(rec_overall,
   scale_x_continuous(breaks = pretty(rec_overall$percent),
                      labels = paste0(abs(pretty(rec_overall$percent)), "%")) +
   geom_text(aes(x = percent/2, y = information, label = paste0(abs(rec_overall$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan_inverse() +
-  ggtitle("Views on Listed Medical Conditions for Part C EI/ECSE Services") +
+  ggtitle("Views on Listed Medical Conditions for \nPart C EI/ECSE Services") +
    theme(axis.title = element_blank(),
          panel.grid.minor = element_blank(),
          legend.title = element_blank(),
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18))
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=15, hjust = 0.5),
+         legend.text = element_text(size = 15))
         
 
 
@@ -1810,20 +1818,20 @@ ggplot(data_reccomended,
   scale_x_continuous(breaks = pretty(data_reccomended$percent),
                      labels = paste0(abs(pretty(data_reccomended$percent)), "%")) +
   geom_text(aes(x = percent/2, y = information, label = paste0(abs(data_reccomended$percent), "%")), color = "red", 
-            size = 5) +
+            size = 4) +
   theme_xaringan_inverse() +
-  ggtitle("Views on Listed Medical Conditions for Part C EI/ECSE Services by Profession") +
+  ggtitle("Views on Listed Medical Conditions for Part C \nEI/ECSE Services by Profession") +
    theme(axis.title = element_blank(),
          panel.grid.minor = element_blank(),
          legend.title = element_blank(),
          legend.position = "bottom",
          legend.direction = "horizontal",
          plot.title.position = "plot",
-         axis.text=element_text(size=18),
-         plot.title = element_text(color="red", size=20, hjust = 0.5),
-         legend.text = element_text(size = 18),
+         axis.text=element_text(size=12),
+         plot.title = element_text(color="red", size=15, hjust = 0.5),
+         legend.text = element_text(size = 15),
          strip.background = element_blank(),
-         strip.text = element_text(face="bold", size = 18, color = "yellow", hjust = 0.5))
+         strip.text = element_text(face="bold", size = 15, color = "yellow", hjust = 0.5))
 
 
 
@@ -1831,6 +1839,55 @@ ggplot(data_reccomended,
 
 INTERVIEW ANALYSIS
 =========================================
+
+Column{data-width=20%}
+-----------------------------------------------------------------------
+
+### **Total number of interview participants**
+
+```{r}
+
+valueBox(18, icon = "fas fa-thumbs-up")
+
+```
+
+### EI/ECSE professionals
+
+```{r}
+
+valueBox(11)
+
+```
+
+
+
+### Pediatricians
+
+```{r}
+
+valueBox(4)
+
+```
+
+### Physical Therapists
+
+```{r}
+
+valueBox(2)
+
+```
+
+### Speech and Language Pathologist
+
+
+```{r}
+
+valueBox(1)
+
+```
+
+
+
 
 Row {.tabset .tabset-fade}
 -------------------------------------
@@ -1844,54 +1901,64 @@ grViz("digraph{
  graph[rankdir = LR]
  
  node[shape = rectangle, style = filled]
- node[fillcolor = Coral, margin = 0.2]
- A[label = 'Code: Aware of the list']
- B[label = 'Code: List is helpful(Parents)']
- C[label = 'Code: List is helpful(Professional']
- D[label = 'Code: Refer to the list']
- 
  subgraph cluster_0 {
  graph[shape = rectangle]
  style = rounded
- bgcolor = 'lightblue'
- label = 'Response'
+ bgcolor = 'Thistle'
+ label = 'Summary'
  node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
- 
- R1[label = 'I was familiar with the condition \nStatement that child could be eligible\n under that so it was just part\n of learning about the job initially\n but not part of the training that I had.']
- 
- R3[label = 'It is publicly available but I do \nnot know that parents know that document. \nIt is buried with in documents that\n a parent would be going like oh\n yeah I know where that is at.']
- 
- R4[label = 'Oh! We may have our own list of\n what we interpret as the state of \nOregon as accepting as a category for\n other health impairment, emotional \ndisturbance, specific learning disability.']
+ S1[label = 'Professionals reported that they learned about the list of medical \nconditions that make children directly eligible for Part C services, through \ntheir academic training or on-the-job. However, when we showed them \nthe medical conditions list, available on the Oregon state plan policy guidance, \nthe majority of them (90%) said, they had not seen the list before. \nFurthermore, the Oregon state medical conditions list is not referred \nto or utilized by professionals on a regular basis. Some EI agencies \nhave collated their own list for regular use in alignment with the state list.']
  }
-  
+ 
+ 
  
  subgraph cluster_1 {
  graph[shape = rectangle]
  style = rounded
- bgcolor = Gold
+ bgcolor = 'lightblue'
+ label = 'Response\n(examples)'
+ node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
  
- label = 'THEME'
+ R1[label = 'We get that education as trainees in residence \nbut a lot of that i think without a real context to \nput it in. Someone may have told me about a list \nof diagnoses. I was in California where I learned about \na similar list which would automatically patients for \nEI services.']
+ R2[label = 'I think it is in our handbook but you know \nlike not that list that you showed me but you know \nour version of the list']
+ R3[label = 'So frankly I do not look at that list that \nyou had ever. We have an internal list \nthat we go by.(EI/ECSE) \nI don’t think I ever personally refer to the \nmedical conditions list.I would just send \nthe referral and trust the EC cares \n would figure out if it is inappropriate.(Pediatrician)']
+ 
+ 
+ }
+  
+ subgraph cluster_2 {
+ graph[shape = rectangle]
+ style = rounded
+ bgcolor = 'SandyBrown'
+ label = 'Codes'
+ node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+ 
+ A[label = 'First time learned about the list']
+ B[label = 'Awareness']
+ C[label = 'Utilization']
+
+ 
+ }
+ 
+ subgraph cluster_3{
+ graph[shape = rectangle]
+ style = rounded
+ bgcolor = DarkSeaGreen
+ label = 'Theme'
  node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
  Z1[label = 'Medical Conditions List']
  
  }
  
- subgraph cluster_2 {
- graph[shape = rectangle]
- style = rounded
- bgcolor = 'green'
- label = 'Summary'
- node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
- S1[label = 'I was familiar with the condition \nStatement that child could be eligible\n under that 
- so it was just part\n of learning about the job initially\n but not part of the training that I had.']
  
  edge[color = black, arrowhead = vee, arrowsize = 1.25]
- Z1 -> {A B C D}
- B -> {R3}
- D -> {R4}
+ Z1 -> {A B C }
  A -> {R1}
- Response -> {S1}
- }
+ B -> {R2}
+ C -> {R3}
+ R2 -> {S1}
+ 
+ 
  }")
 
 
@@ -1907,71 +1974,147 @@ grViz("digraph{
       
       node[shape = rectangle, style = filled]
       
-      node[fillcolor = Coral, margin = 0.2]
-      E[label = 'Code: Ref & eval Process']
-      F[label = 'Code: Skip eval/shorten 45-day Timeline']
-      G[label = 'Code: Have Med. Diagnosis but no DD']
-      H[label = 'Code: Having med. diagnosis helps children']
-      I[label = 'Code: Refer to  for Phy. Statement']
-      J[label = 'Code: Medical Cond. Without Phy. Statement']
-      K[label = 'Code: Delayed referrals']
-      L[label = 'Code: State to State Variation']
-      M[label = 'Code: Within State Variation']
-      
-     
       subgraph cluster_0 {
       graph[shape = rectangle]
       style = rounded
-      bgcolor = Gold
-      
-      label = 'THEME'
+      bgcolor = 'Thistle'
+      label = 'Summary'
       node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
-      Z2[label = 'In-Practice']
+      S1[label = 'EI professionals follow standard referral and evaluation process \nwhere children with diagnosed medical conditions and physician \n statement skip eligibility determination. Healthcare professionals \nreported that they do not provide physician statement for all referrals \nwith medical condition. They also reported limited understanding on how \n having a medical diagnosis and physician statement help children, \nfamilies and EI evaluation team.  Having a medical diagnosis and physician \nstatement not only help children to receive Part C services sooner, \nbut also they are eligible for other services such as specialized \nequipment, diaper, hearing aids, augmentative communication aid, \nand social security. EI professionals also reported to have county-to-county \nvariability in the use of list of medical conditions becasue some \nhave collated their own list.']
       
       }
       
-     edge[color = black, arrowhead = vee, arrowsize = 1.25]
-      Z2 -> {E F G H I J K L M}
+      subgraph cluster_1 {
+      
+      graph[shape = rectangle]
+      style = rounded
+      bgcolor = 'lightblue'
+      label = 'Response\n(examples)'
+      node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+      
+      R1[label = 'To be sure I think to myself if this is a patient I know has \na high-risk of developmental delay and  sends off the referrals \nto EI program and they might tell me I am wrong. I cannot remember if \nthat has ever happened but I do trust them to some degree to \nknow who is appropriate and who is not.(Pediatrician)']
+      
+      R2[label = 'Sometimes if you are testing a child and then it takes a long time \nand then you also have to do an IFSP and that can \nbe too much       but for the physician statement it is usually a lot easier.']
+      
+      R3[label = 'Certainly having a medical diagnosis would have made it much easier \nand they would have got services earlier. Some of the things \n       are they can get specialized equipment through the state if they \nhave the medical diagnosis. They could get something as simple \nas diapers if they are of a certain age or an alternative communication device. \nThey can also get more support like personal support workers to \nsupport their families and more funding from the state if they have a \nmedical diagnosis.']
+      
+      R4[label = 'It is important to have a diagnosis to help them to get services \nearlier because if we do not have that then we have \nto do testing and go by scores. For small young kids who we have \nreally low expectations for their skills, being one \nor two months old, it is just really hard to get them in \nwithout having that diagnosis.']
+      
+      R5[label = 'I do think that there is county-to-county variability based on \nwhat I have heard from staff working in other counties.']
+      
+      }
+      
+      subgraph cluster_2{
+      graph[shape = rectangle]
+      style = rounded
+      bgcolor = 'SandyBrown'
+      label = 'Codes'
+      node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+      
+      A[label = 'Referral & evaluation process']
+      B[label = 'Skip eval/shorten 45-day Timeline']
+      C[label = 'Having med. diagnosis helps children']
+      D[label = 'Refer to get physician statement']
+      E[label = 'County to county variability']
+     
+      }
+      
+      
+      subgraph cluster_3{
+      graph[shape = rectangle]
+      style = rounded
+      bgcolor = DarkSeaGreen
+      label = 'Theme'
+      node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+      Z1[label = '    In-Practice   ']
+      
+      }
+      edge[color = black, arrowhead = vee, arrowsize = 1.25]
+      
+      Z1 -> {A B C D E}
+      A ->{R1}
+      B ->{R2}
+      C ->{R3}
+      D ->{R4}
+      E ->{R5}
+      R3->{S1}
 
-
-}")
-
+      
+      }")
+ 
 
 ```
 ### Theme 3: During Covid-19 Pandemic
+
 ```{r}
 
 
 grViz("digraph{
 
+
  graph[rankdir = LR]
  
  node[shape = rectangle, style = filled]
  
- node[fillcolor = Coral, margin = 0.2]
- O[label = 'Code: Platform(Virtual/In-person/Both']
- P[label = 'Code: Number of Referrals']
- Q[label = 'Code: Challenges(Family)']
- R[label = 'Code: Challenges(Professional']
- S[label = 'Code: Challenges(Service Delivery']
- T[label = 'Code: Service delivery adaptations']
- 
- 
  subgraph cluster_0 {
  graph[shape = rectangle]
  style = rounded
- bgcolor = Gold
- label = 'THEME'
+ bgcolor = 'Thistle'
+ label = 'Summary'
  node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
- Z3[label = 'During Covid-19 Pandemic']
+ S1[label = 'The interview data analysis indicated that as an urgent response \nto covid-19 pandemic, the EI/ECSE and healthcare professionals \nshifted to online platform for evaluations, assessments and other \nservices. Specifically, professionals indicated that virtual platform \nis not suitable for delivering services to young children to \ncarry out evaluations and assessments. In addition, virtual platform \nhas put more burden on families to carry out observations \nwith no technical expertise and lack of suitable materials. \nSome professionals also discussed that having a well-written \nmedical conditions list and awareness among professionals \nwould have benefitted some families who had to go through \nthe eligibility determination process where \nthey could have by-passed it during the covid-19 pandemic.']
+ 
  }
+ 
+ subgraph cluster_1 {
+ graph[shape = rectangle]
+ style = rounded
+ bgcolor = 'lightblue'
+ label = 'Response\n(examples)'
+ node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+
+ R1[label = 'Well, I know that our numbers are a lot lower \nso we are missing children. We are not getting \nthe referrals that we did pre-covid. Pretty \nsignificantly and that’s across the state of Oregon.']
+ 
+ R2[label = 'The evaluations have been delayed because \nof covid. We were not set up for this so it \ngot delayed. Also, we have families medically \nfragile kids, they were afraid to even come \nin for the evaluation, or people just being \n nervous about the whole thing. \nA lot of families did not have a device \nor internet. We provided Ipads.']
+ 
+ R3[label = 'Besides just the logistics of doing things \nonline, not being able to touch. I know \nour colleagues who are physical therapists \nare kind of frustrated because you can’t \nalways see the tone issue across the \nscreen. So the assessment is a little bit different \nand it very much depends on the kid.']
+ 
+ R4[label = 'The platform sometimes gets glitchy or drops \nthe call or you know whatever or the family \ndoes not have very good video.']
+ }
+ 
+ subgraph cluster_2 {
+ graph[shape = rectangle]
+ style = rounded
+ bgcolor = 'SandyBrown'
+ label = 'Codes'
+ node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+ A[label = 'Number of referrals/\nFrequency of meetins']
+ B[label = 'Challenges faced by families']
+ C[label = 'Challenges faced by professionals']
+ D[label = 'Challenges related to service delivery']
+ 
+ }
+ 
+ subgraph cluster_3 {
+ graph[shape = rectangle]
+ style = rounded
+ bgcolor = DarkSeaGreen
+ label = 'Theme'
+ node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+ Z1[label = 'During Covid-19 Pandemic']
+ }
+ 
  
  edge[color = black, arrowhead = vee, arrowsize = 1.25]
  
- Z3 -> {O P Q R S T}
-
-
-}")
+ Z1 -> {A B C D}
+ A -> {R1}
+ B -> {R2}
+ C -> {R3}
+ D -> {R4}
+ R2 -> {S1}
+ 
+ }")
 
 
 
@@ -1987,23 +2130,58 @@ grViz("digraph{
  
  node[shape = rectangle, style = filled]
  
- node[fillcolor = Coral, margin = 0.2]
- U[label = 'Code: Views on the current list']
- V[label = 'Code: Visible']
- W[label = 'Code: Suggestions']
-
  subgraph cluster_0 {
  graph[shape = rectangle]
  style = rounded
- bgcolor = Gold
+ bgcolor = 'Thistle'
+ label = 'Summary'
+ node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+ 
+ S1[label = 'We investigated views of participants \non the current list and if they would \nlike to suggest any changes. Respondents \nappreciated that there is a list of medical \nconditions in Oregon, however they \ngreatly agreed in their replies that \nthe current list is not seen by them and they \ndo not refer it. The three most \nagreed recommendations are to have \na more comprehensive, detailed list, widely \ncirculated and presented in relevant forums \n on a regular basis and it should be \n embeded within the current system \n such as in the universal referral \nform and in the evaluation packet in \nEI programs to promote its appropriate utilization \nand increased understanding among \nprofessionals and families.']
+ 
+ }
+ 
+ 
+ subgraph cluster_1 {
+ graph[shape = rectangle]
+ style = rounded
+ bgcolor = 'lightblue'
+ label = 'Response\n(examples)'
+ node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+ R1[label = 'I am sure I have colleagues who know exactly \nhow this works. But I think more people are like \nme and not quite sure how it works and \nthen think that it probably works well about \n80% of the time.(Neonatologist)']
+ R2[label = 'Having more people know about it. You know, \n it is surprising to me having worked in the field of \nearly intervention for 22 years and I have \nnever seen an actual list. (EI/ECSE Specialist)']
+ R3[label = 'I have had a lot of presentations by EI folks and it has \nnever been presented to me so maybe when they go out to \ndo presentations to practices to talk about their services, \nmaybe that should be part of what they talk about.
+ (Pediatrician)']
+ }
+ 
+ subgraph cluster_2 {
+ graph[shape = rectangle]
+ style = rounded
+ bgcolor = 'SandyBrown'
+ label = 'Codes'
+ node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
+ A[label = 'Views on the current list']
+ B[label = 'Accessible/Visible']
+ C[label = 'Suggestions']
+ }
+
+ subgraph cluster_3 {
+ graph[shape = rectangle]
+ style = rounded
+ bgcolor = DarkSeaGreen
  label = 'THEME'
  node[shape = rectangle, fillcolor = LemonChiffon, margin = 0.25]
- Z4[label = 'Recommendations']
+ Z1[label = 'Recommendations']
+ 
  }
  
  edge[color = black, arrowhead = vee, arrowsize = 1.25]
  
- Z4 -> {U V W}
+ Z1 -> {A B C}
+ A-> {R1}
+ B -> {R2}
+ C -> {R3}
+ R2 -> {S1}
 
 
 }")
@@ -2012,50 +2190,180 @@ grViz("digraph{
 ```
 
 
-Key Findings
+Results
 ========================================
 
 Row {.tabset .tabset-fade}
 -------------------------------------
     
-### **Research Question1:**
+### <span style="color:  #40B0A6;">**Research Question1:**</span>
 
-**To what extent are EI professionals aware of the categories of medical conditions that are listed in the Oregon State Plan policy guidance? (AWARENESS)**
+<span style="color: #E66100;">**To what extent are EI professionals aware of the categories of medical conditions that are listed in the Oregon State Plan policy guidance? (AWARENESS)**</span>
 
 Overall analysis showed that **74%** are aware of the medical conditions listed in the Oregon State Plan Policy guidance, **72%** are aware of the medical documents and reports that constitute written documentation of eligibility, **68%** know that there are medical conditions that may not be presently adversely affecting child's development, and **56%** are aware that there are medical conditions eligible for Part C services but may not be listed in the policy guidance. When results were analyzed by profession, significant differences were found in the awareness of healthcare and EI/ECSE professionals where **21%** of healthcare professionals are aware and **19%** are not aware of the medical conditions list. Among healthcare professionals, **18%** are aware and **22%** are not aware of the written documentation of Part C eligibility, **19%** are aware and **22%** are not aware that there are medical conditions that may not be presently affecting the child's development, and only **13%** are aware and **27%** are not aware that there are medical conditions that may be eligible for Part C services but are not listed in the policy documents. No significant differences were found based on job status (full-time vs part-time), years of service, and professional role, however, a lower number of professionals **(27% vs 31%)** with less than 15 years of experience reported to be aware of medical conditions that may be eligible for EI/ECSE services but not listed. Analysis based on professional role indicated that **24%** of professionals whose role is to make referrals or provide medical diagnosis are aware of the medical conditions that may be eligible for services but not listed whereas **30%** reported being unaware.
 Cronbach's alpha score of **0.73** indicates higher internal consistencies among 4 items with binary response in the survey that were asked to explore the awareness level. 
 
+Qualitative analysis aligns with the survey response where respondents indicated that they learned about the diagnosed medical conditions that have a high probability of developmental delay, through their educational training or on-the-job. The majority of respondents (90%) said they have not seen the Oregon list of medical conditions before. EI professionals reported that programs have their own list of medical conditions. Lastly, healthcare professionals reported limited understanding of the purpose of the medical conditions list and a lack of understanding in who the list is for!  
+
  
-### **Research Question 2:**
+### <span style="color: #40B0A6;">**Research Question 2:**</span>
 
-**How are the categories of medical conditions that are listed in the Oregon State Plan policy guidance are understood and used by professionals in EI eligibility evaluations and assessments for birth to 5-year-old-children in Oregon? (IN PRACTICE)**
+<span style="color: #E66100;">**How are the categories of medical conditions that are listed in the Oregon State Plan policy guidance are understood and used by professionals in EI eligibility evaluations and assessments for birth to 5-year-old-children in Oregon? (IN PRACTICE)**</span>
 
 
-Results were analyzed based on the overall response, profession, job status, years of service, and professional role. Consistent results were found across all groups indicating limited use of medical conditions list due to lack of information. Overall analysis indicates that **77%** of professionals ask for information on medical conditions from colleague to decide on EI referrals and eligibility evaluation, **58%** have experienced a delay in EI eligibility evaluation due to lack of information, **57%** have experienced a delay in timely receipt of EI services for children with diagnosed medical conditions, and **53%** have looked for more information on medical conditions for EI eligibility determination.
+Results were analyzed based on the overall response, profession, job status, years of service, and professional role. Consistent results were found across all groups indicating limited use of medical conditions list due to the lack of information. Overall analysis indicates that **77%** of professionals ask for information on medical conditions from colleague to decide on EI referrals and eligibility evaluation, **58%** have experienced a delay in EI eligibility evaluation due to lack of information, **57%** have experienced a delay in timely receipt of EI services for children with diagnosed medical conditions, and **53%** have looked for more information on medical conditions for EI eligibility determination.
 **Sixty-eight percent** reported that they have not skipped EI eligibility evaluation for children with diagnosed medical conditions that have a high probability of developmental delay.
 
+Qualitative analysis provided similar insights where healthcare professionals reproted inconsistency in providing physician statement. They also reported limited understanding on how having a medical diagnosis and physician statement help the child, family, and the EI evaluation team. EI agencies have collated their own list of medical conditions in alignment with the state list, which may lead to county-to-county variation in the referral and evaluation process. 
 
 
-### **Research Question 3:**
+### <span style="color: #40B0A6;">**Research Question 3:**</span>
 
-**How and to what extent are EI eligibility evaluation and assessments for children with diagnosed medical conditions impacted during the covid-19 restrictions? (During COVID-19)**
+<span style="color: #E66100;">**How and to what extent are EI eligibility evaluation and assessments for children with diagnosed medical conditions impacted during the covid-19 restrictions? (During COVID-19)**</span>
 
 During the COVID-19 pandemic, **94%** professionals reported to provide services remotely, **62%** experienced delay in EI eligiblity determination for children with diagnosed medical conditions, and **48%** have experienced decrease in number of children accessing healthcare and part C EI/ECSE services.
 A set of questions were asked only from EI/ECSE professionals to explore the state of uptake of EI/ECSE serivces during the pandemic where **77%** reported to follow the 45-day timeline to do EI eligibility evaluation, assessments and IFSP development. **Forty percent** EI/ECSE professionals are using only tools that can be administered by parents during the COVID-19 pandemic and **30%** reported to meet children and families in-person or in home visits. 
+
 Only **23%** EI/ECSE professionals have reported to skip EI eligibility evaluation for children referred with written documentation of eligibility, and **9%** reported to enroll children with interim IFSP where EI eligibility evaluation was not possible for children with diagnosed medical conditions during the COVID-19 pandemic. Low percentage of professionals reporting to skip EI eligibility evaluation and enrolling children with interim IFSP indicate lack of awareness or information among EI/ECSE professionals of federal regulations on children referred with diagnoed medical conditions that have a high probability of developmental delay or disability. 
 
+The qualitative analysis confirmed the above findings. As an urgent response to covid-19 pandemic, the EI/ECSE and healthcare professionals shifted to online platform for evaluations, assessments and other services. Specifically, professionals indicated that virtual platform is not suitable for delivering services to young children to carry out evaluations and assessments. In addition, virtual platform has put more burden on families to carry out observations with no technical expertise and lack of suitable materials. Some professionals also discussed that having a well-written medical conditions list and awareness among professionals would have benefitted some families who had to go through the eligibility determination process where they could have by-passed it during the covid-19 pandemic. Results also indicated that number of referrals were severely reduced due to the covid-19 pandemic. 
 
-### **Research Question 4:**
+### <span style="color: #40B0A6;">**Research Question 4:**</span>
 
-**What changes do EI professionals in Oregon recommend in the level of information provided about the categories of medical conditions that are likely to result in developmental delay? (VIEWS)**
+<span style="color: #E66100;">**What changes do EI professionals in Oregon recommend in the level of information provided about the categories of medical conditions that are likely to result in developmental delay? (VIEWS)**</span>
 
 The analysis resulted in a consistent response from EI/ECSE and healthcare professionals in terms of changes they would prefer in medical conditions listed in the Oregon State Plan Policy guidance. **Ninety percent** reported having a more detailed and comprehensive list would help to decide when EI eligibility evaluations can be skipped and direct referrals are made for EI assessments and **86%** percent agreed that a more detailed and comprehensive list of diagnosed medical conditions is needed in Oregon. **Seventy-nine percent** said a detailed and comprehensive list would have been helpful during the COVID-19 pandemic. **Sixty-five percent** said adequate information is not provided in the list of medical conditions that make children eligible for Part C EI/ECSE services in Oregon.
 
+During the semi-structured interviews, we investigated views of participants on the current list and if they would like to suggest any changes. Respondents appreciated that there is a list of medical conditions in Oregon, however they greatly agreed in their replies that the current list is not seen by them and they do not refer it. The three most agreed recommendations are to have a more comprehensive, detailed list, widely circulated and presented in relevant forums on a regular basis and it should be embeded within the current system such as in the universal referral form and in the evaluation packet in EI programs to promote its appropriate utilization and increased understanding among professionals and families.
 
 Conclusion
 =========================================
 
-Column{data-height=50%, data-width=20%}
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------
+
+
+### <span style="color: #40B0A6;">**Suggestion1**</span>
+
+
+<span style="color: #E66100;">**Problem: According to professionals people may think if condition is not on the list, it is not eligible becasue list contains limited information.**</span>.
+
+<span style="color: #40B0A6;">**Statement:**</span>
+
+*“I suppose the trouble with A list is that there's always those outlying diagnoses where, ‘oh, it’s not on the list so it doesn't fit. A list of specific conditions would be nice but with the caveat of it being like this isn't necessarily an all-inclusive list.”- Speech and Language Pathologist*
+
+*“I think more information would always be better. A lot of times we will reference this and if the condition is on there then you know it's a lot easier for us to bring the child in but I mean there's a lot of times where we have conditions that aren't on this list and so then we kind of have to go and do our own research. So if we find research that points to the child having a condition or there's been research studies that show that for the potential of developmental delay then we cite that kind of documentation and use that to bring them in if it’s not on this list.”- Physical Therapist*
+
+*“One conditions was cleft lip and palate. So I actually don't know if that's on the list but if it’s not, certainly it should, because it has a huge developmental impact, even with mild cases.” – Speech and Language Pathologist*
+
+<span style="color: #40B0A6;">**Recommendation:**</span>
+
+Having more detailed, comprehensive list in simple language with more conditions that are almost 100% of the time eligible will be helpful. However, It would be helpful to have disclaimer that the list is not an all-inclusive list and that for more information a reliable web resource on medical conditions need to be provided. 
+
+### <span style="color: #40B0A6;">**Suggestion2**</span>
+
+<span style="color: #E66100;">**Problem: Lack of clarity in the purpose and utilization of the list? Is it for medical professionals, families or Early Interventional professionals?**</span>.
+
+<span style="color: #40B0A6;">**Statement:**</span>
+
+*“I think it's very important for medical professionals to be sharing this with us, the teachers who should be looking out for these things and maybe even checking in with the parents and asking them if they have concerns.”- EI/ECSE professional.*
+
+*"I would just send the referral and trust the EC cares would figure out if it’s inappropriate."- Pediatrician*
+
+<span style="color: #40B0A6;">**Recommendation:**</span>
+
+Need more streamlined, clear presentation of information in simple langauge with instruction on how list can be utlized and implemented.  
+
+### <span style="color: #40B0A6;">**Suggestion3**</span>
+
+<span style="color: #E66100;">**Problem: Respondents varied greatly in their replies to making the list accessible for families**</span>.
+
+<span style="color: #40B0A6;">**Statement:**</span>
+
+*“I would love a list that I can share with a parent that they can understand without me needing to translate it alot. May be something in more layman’s terms.” (EI/ECSE professional)*
+
+*“It’s certainly a very involved document and you need some sense of background to understand a lot of it but I think it's important to be transparent with parents about this. I would think if any child might fall into any of these things a bit near, they should be provided to parents after birth or at the point which pediatricians or Health Providers are evaluating and assessing children and helping so this should be shared.” – (EI/ECSE professional)*
+
+*“I don't know how many parents would prefer this. I don't know if it's in super family-friendly language.” – EI/ECSE professional*
+
+*“I don't know if they had families look through it and given feedback I think that would be a good place to start.” -Physical Therapist*
+
+*“It is always great to have information available for families that is appropriate and relevant and in family-friendly language. However, just the idea that the process of a physician statement is so different from a standard referral so most of the time when somebody referred for a physician or a med statement because of his medical condition. The doctor is saying here's a program that will help you because we know things will go wrong. So it’s an active referral for developmental delay versus passive referral for a physician statement. So I don’t know if families would access it really all that much because they are already in the program by the time they would need it.” EI/ECSE specialist*
+
+<span style="color: #40B0A6;">**Recommendation:**</span>
+
+Parent groups should be consulted as part of the decision making process to get their feedback on how useful list would be for families. 
+
+
+### <span style="color: #40B0A6;">**Suggestion4**</span>
+
+<span style="color: #E66100;">**Problem: Current list is not accessible/visible/widely circulated. Only 10% interviewees had seen the Oregon list of medical conditions before the interview. Professionals were aware that children can be automatically eligible for EI services based on certain medical conditions, however, majority of participants (90%) have not seen the list before or referred in their professional role**</span>.
+
+<span style="color: #40B0A6;">**Statement:**</span>
+
+*“I’ve had a lot of presentations by EI folks and it’s never been presented to me so maybe when they go out to do presentations… they often go around to practices to talk about their services, maybe that should be part of what they talk about.” – Pediatrician*
+
+*“ I don't think any parents have ever seen anything like this. I don't think parents really understand. A lot of parents don't even understand what we are, what we do.” – EI/ECSE professional*
+
+*“Having more people know about it. You know it's surprising to me having worked in the field of early intervention for 22 years and I've never seen an actual list and if this is from the state of Oregon it seems like with all the paperwork that I do get and all the training that I do get it would be easy to be like…. Hey, here is a sheet of paper you should be aware of.”*
+
+
+<span style="color: #40B0A6;">**Recommendation:**</span>
+
+a. List should be easily available electronically and widely distributed across pediatric centers and early intervention agencies in Oregon. 
+
+b. An electronic list with a link for medical resource for more information should be provided. 
+
+c. List can be published on popular websites such as Oregon Pediatric Society and Family Practice Society so that healthcare professionals do not miss this. 
+
+d. List should be included in relevant presentations and forums regularly in Oregon.
+
+
+### <span style="color: #40B0A6;">**Suggestion5**</span>
+
+<span style="color: #E66100;">**Problem: Current list is not embedded in the systems and practices in Oregon**</span>.
+
+<span style="color: #40B0A6;">**Statement:**</span>
+
+*“But they don’t list any on the referral form, they give examples like that they have autism but there is not the entire list there and it doesn’t refer to a list. So it could even just say look at this website, if you want to see the list of what we are asking for,“ – Pediatrician*
+
+*“We have many children who are referred in, may be 18 months old or 2 or 3 or 3.5 years and we go ahead and then we start this standardized evaluation eligibility process. Never have I been cued to before I start to say bring this out and review something like this with the parent to make sure that the child doesn't fit into one of these categories. We don't ask the parent, especially during covid-19, we could by-pass the standardized evaluations.”- EI/ECSE specialist*
+
+<span style="color: #40B0A6;">**Recommendation:**</span>
+
+a. List can be made available like a reference list on the universal referral form as an additional sheet. An online version can include pop up connected to the list of medical conditions would potentially open up the opportunity for medical professionals to understand and utilize it better. 
+
+b. List can be included in the evaluation packet in EI/ECSE programs with an instruction to review these conditions before your proceed with a standardized evaluation. 
+
+c. List should be  included in orientation and induction of new recruits in healthcare and early intervention programs.
+
+
+Column{data-height=70%}
 -----------------------------------------------------------------------
 
-### Recommendation
+### <span style="color: #40B0A6;">**Implementation Science**</span>
+
+To have a long-term, consistent practice change for increased utilization, awareness and cross-sector uniformity (Part C Early Intervention and Healthcare) in the use of list of medical conditions for seamless identification, referral and uptake of Part C EI services for birth to 3-year-old children with diagnosed medical conditions, Oregon state need to adopt a focussed approach using the implementation science lens. 
+Based on the in-depth data anlysis, we recommend use of Plan-DO-Study-Act (PDSA) process that encourages (i)planning the change(Plan), (ii) implementing the change on a small scale (Do), (iii) analyzing data and results(Study), and (iv) refining the changes based on the results(Act).
+
+<span style="color: #E66100;">**PLAN**</span>: To set up a working committee consisting of professionals from the EI evaluation team (physical therapist, speech and langauge therapist), pediatrician/care manager, a representative of parent group, and a state representative. The purpose of this committee is to devise a new comprehensive, detailed medical conditions list with appropriate information, presented in a user-friendly language and manner. Additionally, committee will also devise a focussed dissemination and implementation plan at the planning stage. 
+
+<span style="color: #E66100;">**DO**</span>: Embed the new list in existing processes and practices including trainings, forums, orientation and induction in a selected EI program and a set of healthcare professionals on a small scale. 
+
+<span style="color: #E66100;">**STUDY**</span>: Collect feedback and analyze the results.
+
+<span style="color: #E66100;">**ACT**</span>: Implement the recommended changes and go through the cycle again until intended results for sustainable use are achieved. Followed by state-wide implementation of the list of medical conditions in systems, processes, and practices.   
+
+
+
+### <span style="color: #40B0A6;">**Conclusion**</span>
+
+Lack of awareness, access, and inconsistent utilization of the list of diagnosed medical conditions that give children direct access to Part C EI/ECSE services in the state of Oregon indicate that a more comprehensive and detailed list in a user-friendly language is needed.  For a long-term sustainable use and seamless cross-sectoral referral and evaluation between Part C EI and healthcare professionals, the list need to be embedded in the existing systems and practices. 
+
+
+
+
+
+
