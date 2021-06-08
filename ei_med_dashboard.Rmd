@@ -1,5 +1,5 @@
 ---
-title: "Part C Eligibility for Children with Diagnosed Medical Conditions"
+title: "Part C Eligibility Based on Medical Conditions in Oregon"
 output: 
   flexdashboard::flex_dashboard:
     theme: sandstone
@@ -15,12 +15,13 @@ output:
 .navbar-brand {
 color:white!important;
 }
+
 </style>   
 
 <style type="text/css">
 
 .chart-title {  /* chart_title  */
-   font-size: 15px
+   font-size:12px
 
 </style>
 
@@ -82,7 +83,6 @@ style_mono_accent(
   header_font_google = google_font("Hind","100","100i"))
 
 ```
-
 
 Descriptive
 ============================================
@@ -1344,7 +1344,7 @@ ggplot(practice_data_role,
 ```
 
 
-During Covid-19 Pandemic
+During Covid-19
 ==========================================
 
 Column{data-height=50%, data-width=15%}
@@ -1602,7 +1602,7 @@ ggplot(covid_only_ei,
 ```
 
 
-Views on Current List
+Views
 =========================================
 
 Column{data-height=50%, data-width=20%}
@@ -1837,7 +1837,7 @@ ggplot(data_reccomended,
 
 ```
 
-INTERVIEW ANALYSIS
+INTERVIEWS
 =========================================
 
 Column{data-width=20%}
@@ -2236,14 +2236,12 @@ The analysis resulted in a consistent response from EI/ECSE and healthcare profe
 
 During the semi-structured interviews, we investigated views of participants on the current list and if they would like to suggest any changes. Respondents appreciated that there is a list of medical conditions in Oregon, however they greatly agreed in their replies that the current list is not seen by them and they do not refer it. The three most agreed recommendations are to have a more comprehensive, detailed list, widely circulated and presented in relevant forums on a regular basis and it should be embeded within the current system such as in the universal referral form and in the evaluation packet in EI programs to promote its appropriate utilization and increased understanding among professionals and families.
 
+
 Conclusion
 =========================================
 
-
-
 Row {.tabset .tabset-fade}
 -----------------------------------
-
 
 ### <span style="color: #40B0A6;">**Suggestion1**</span>
 
